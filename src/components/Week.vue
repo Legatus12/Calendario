@@ -1,10 +1,10 @@
 <template>
-  <Calendar />
+    <div>
+        <p>week</p>
+    </div>
 </template>
 
 <script setup>
-
-import Calendar from './components/Calendar.vue';
 
 </script>
 
