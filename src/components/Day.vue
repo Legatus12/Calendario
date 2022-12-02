@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>day</p>
+        <p>component day</p>
     </div>
 </template>
 
