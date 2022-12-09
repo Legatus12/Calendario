@@ -7,9 +7,9 @@
                 </option>
             </select>
 
-            <div class="flex justify-center items-center p-4 gap-8">
+            <div class="button-container">
                 <button class="date-button" @click="getPreviousDay">&lt;</button>
-                <div>{{ selectedDate.getDate() }}</div>
+                <div>{{ selectedDate }}</div>
                 <button class="date-button" @click="getNextDay">&gt;</button>
             </div>
         </div>
@@ -18,8 +18,7 @@
             <component v-bind:is="selectedComponent" class="component"/>
         </div>
     </div>
-
-  </template>
+</template>
   
 <script setup>
 
@@ -37,7 +36,7 @@ const options = [
 ]
 
 const currentDate = (new Date());
-const selectedDate = ref(currentDate);
+const selectedDate = ref(new Date());
 
 const getPreviousDay = () => {
     selectedDate.value.setDate(selectedDate.value.getDate() - 1);
@@ -63,6 +62,10 @@ const getNextDay = () => {
 
 .select{
     @apply border-solid border-2 border-black p-4 rounded-full cursor-pointer
+}
+
+.button-container{
+    @apply flex justify-center items-center p-4 gap-8
 }
 
 .date-button{
