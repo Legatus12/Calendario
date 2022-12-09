@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>week</p>
+        <p>component week</p>
     </div>
 </template>
 
