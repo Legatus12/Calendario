@@ -20,6 +20,8 @@
         
     </div>
 
+    <AddEvent />
+
 </template>
   
 <script setup>
