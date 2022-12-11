@@ -9,72 +9,76 @@
 
             <div class="flex justify-center items-center p-4 gap-8">
                 <button class="date-button" @click="getPreviousDay">&lt;</button>
-                <div>{{ selectedDate.getDate() }}</div>
+                <div>{{ selectedDate.Day }}</div>
                 <button class="date-button" @click="getNextDay">&gt;</button>
             </div>
         </div>
-
+        
         <div class="body-container">
-            <component v-bind:is="selectedComponent" class="component"/>
+            <component v-bind:is="selectedComponent" class="component" />
         </div>
+        
     </div>
 
-  </template>
+</template>
   
 <script setup>
 
-import { ref } from "vue";
+import { reactive,shallowRef } from "vue";
 
 import Day from './Day.vue';
 import Week from './Week.vue';
 import Month from './Month.vue';
 
-const selectedComponent = ref(Day);
+const selectedComponent = shallowRef(Day);
 const options = [
-        { text: 'Day', value: Day },
-        { text: 'Week', value: Week },
-        { text: 'Month', value: Month }
+    { text: 'Day', value: Day },
+    { text: 'Week', value: Week },
+    { text: 'Month', value: Month }
 ]
 
 const currentDate = (new Date());
-const selectedDate = ref(currentDate);
+
+const selectedDate = reactive({ Date: currentDate, Day: currentDate.getDate() });
 
 const getPreviousDay = () => {
-    selectedDate.value.setDate(selectedDate.value.getDate() - 1);
-    console.log(selectedDate.value)
+
+    selectedDate.Date.setDate(selectedDate.Date.getDate() - 1);
+    selectedDate.Day = selectedDate.Date.getDate();
+    console.log(selectedDate.Date)
 }
 
 const getNextDay = () => {
-    selectedDate.value.setDate(selectedDate.value.getDate() + 1);
-    console.log(selectedDate.value)
+    selectedDate.Date.setDate(selectedDate.Date.getDate() + 1);
+    selectedDate.Day = selectedDate.Date.getDate();
+    console.log(selectedDate.Date)
 }
+
 
 </script>
 
 <style scoped>
-
-.main-container{
+.main-container {
     @apply flex flex-col w-full h-full border-solid border-2 border-black rounded-2xl
 }
 
-.header-container{
+.header-container {
     @apply flex justify-around items-center
 }
 
-.select{
+.select {
     @apply border-solid border-2 border-black p-4 rounded-full cursor-pointer
 }
 
-.date-button{
+.date-button {
     @apply w-12 h-12 border-solid border-2 border-black rounded-full
 }
 
-.body-container{
+.body-container {
     @apply h-full w-full p-4
 }
 
-.component{
+.component {
     @aplly border-solid border-2 border-black rounded-full
 }
-
 </style>
