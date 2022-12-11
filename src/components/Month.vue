@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>month</p>
+        <p>component month</p>
     </div>
 </template>
 
