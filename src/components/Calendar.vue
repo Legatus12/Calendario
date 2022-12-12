@@ -13,20 +13,20 @@
                 <button class="date-button" @click="getNextDay">&gt;</button>
             </div>
         </div>
-        
+
         <div class="body-container">
             <component v-bind:is="selectedComponent" class="component" />
         </div>
-        
+        <AddEvent />
     </div>
 
-    <AddEvent />
+
 
 </template>
   
 <script setup>
 
-import { reactive,shallowRef } from "vue";
+import { reactive, shallowRef } from "vue";
 
 import Day from './Day.vue';
 import Week from './Week.vue';

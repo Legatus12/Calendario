@@ -1,0 +1,18 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "hola": "prueba"
+    },
+    {
+      "name": "Reserva oficial",
+      "reason": "Prueba reserva",
+      "description": "Reserva test",
+      "start_date": "2022-12-12",
+      "start_time": "19:30",
+      "end_date": "2022-12-12",
+      "end_time": "20:30",
+      "id": 2
+    }
+  ]
+}
