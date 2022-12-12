@@ -10,27 +10,24 @@
             <div class="button-container">
                 <button class="date-button" @click="getPreviousDay">&lt;</button>
 
-                <div>{{ selectedDate.Day }}</div>
+                <div>{{ selectedDate.day }} / {{ selectedDate.month + 1 }} / {{ selectedDate.year }}</div>
 
                 <button class="date-button" @click="getNextDay">&gt;</button>
             </div>
         </div>
         
         <div class="body-container">
-            <component v-bind:is="selectedComponent" class="component" />
+            <component v-bind:is="selectedComponent" />
         </div>
-        
     </div>
 
-
     <AddEvent />
-
 
 </template>
   
 <script setup>
 
-import { reactive,shallowRef } from "vue";
+import { reactive, shallowRef } from "vue";
 
 import Day from './Day.vue';
 import Week from './Week.vue';
@@ -47,19 +44,23 @@ const options = [
 const currentDate = (new Date());
 
 
-const selectedDate = reactive({ Date: currentDate, Day: currentDate.getDate() });
+const selectedDate = reactive({ Date: currentDate, day: currentDate.getDate(), month: currentDate.getMonth(), year: currentDate.getFullYear() });
 
 
 const getPreviousDay = () => {
 
     selectedDate.Date.setDate(selectedDate.Date.getDate() - 1);
-    selectedDate.Day = selectedDate.Date.getDate();
+    selectedDate.day = selectedDate.Date.getDate();
+    selectedDate.month = currentDate.getMonth();
+    selectedDate.year = currentDate.getFullYear();
     console.log(selectedDate.Date)
 }
 
 const getNextDay = () => {
     selectedDate.Date.setDate(selectedDate.Date.getDate() + 1);
-    selectedDate.Day = selectedDate.Date.getDate();
+    selectedDate.day = selectedDate.Date.getDate();
+    selectedDate.month = currentDate.getMonth();
+    selectedDate.year = currentDate.getFullYear();
     console.log(selectedDate.Date)
 }
 
@@ -72,7 +73,7 @@ const getNextDay = () => {
 }
 
 .header-container {
-    @apply flex justify-around items-center
+    @apply basis-1/12 flex justify-around items-center
 }
 
 .select {
@@ -90,10 +91,16 @@ const getNextDay = () => {
 }
 
 .body-container {
-    @apply h-full w-full p-4
+    @apply basis-11/12 px-4 overflow-y-scroll border-solid border-t-2 border-black
 }
 
-.component {
-    @aplly border-solid border-2 border-black rounded-full
+.body-container::-webkit-scrollbar {
+  display: none;
 }
+
+.body-container  {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 </style>
