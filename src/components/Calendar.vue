@@ -7,9 +7,11 @@
                 </option>
             </select>
 
-            <div class="flex justify-center items-center p-4 gap-8">
+            <div class="button-container">
                 <button class="date-button" @click="getPreviousDay">&lt;</button>
+
                 <div>{{ selectedDate.Day }}</div>
+
                 <button class="date-button" @click="getNextDay">&gt;</button>
             </div>
         </div>
@@ -19,6 +21,7 @@
         </div>
         <AddEvent />
     </div>
+
 
 
 
@@ -42,7 +45,9 @@ const options = [
 
 const currentDate = (new Date());
 
+
 const selectedDate = reactive({ Date: currentDate, Day: currentDate.getDate() });
+
 
 const getPreviousDay = () => {
 
@@ -73,7 +78,13 @@ const getNextDay = () => {
     @apply border-solid border-2 border-black p-4 rounded-full cursor-pointer
 }
 
+
+.button-container {
+    @apply flex justify-center items-center p-4 gap-8
+}
+
 .date-button {
+
     @apply w-12 h-12 border-solid border-2 border-black rounded-full
 }
 
