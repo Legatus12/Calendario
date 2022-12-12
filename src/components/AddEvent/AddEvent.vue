@@ -40,11 +40,6 @@
                             class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all  sm:my-8 sm:w-full sm:max-w-lg ">
                             <div class=" mx-10 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                 <div class="sm:flex sm:items-start">
-                                    <div
-                                        class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full  sm:mx-0 sm:h-10 sm:w-10">
-
-
-                                    </div>
                                     <div class="w-full text-center">
                                         <div>
                                             <form class="flex flex-col" @submit.prevent="addEvent">
@@ -83,7 +78,7 @@
 
                                                 <div class="flex flex-row ">
                                                     <button type="button" @click="dialog = false"
-                                                        class="mt-10 w-full justify-center rounded-md border border-transparent  bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-300 focus:outline-none">Cancel</button>
+                                                        class="mt-10 w-full justify-center rounded-md border border-transparent  bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-300 focus:outline-none">Cancelar</button>
                                                     <button type="submit"
                                                         class="mt-10 w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-300 focus:outline-none">Aceptar</button>
                                                 </div>
@@ -92,14 +87,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--
-                            <div class=" px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                <button type="button" @click="dialog = false"
-                                    class="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-300 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">aceptar</button>
-                                <button type="button" @click="dialog = false"
-                                    class="mt-3 inline-flex w-full justify-center rounded-md border border-transparent  bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-300 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Cancel</button>
-                            </div>
-                            -->
                         </div>
                     </transition>
                 </div>
@@ -121,10 +108,15 @@ const emits = defineEmits(["SendEvent"])
 
 
 const addEvent = async () => {
+    /*    se puede pasar de string a formato fecha
+    const prueba = new Date("2022-12-12");
+            console.log(prueba);*/
     try {
         if (event.name && event.reason && event.description && event.start_date && event.start_time && event.end_date && event.end_time) {
             const res = await axios.post(`http://localhost:3000/events/`, getEvent(event));
-            // emits("SendEvent", event);
+            // emits("SendEvent", event); futuro uso del programa
+
+            alert("Evento registrado con éxito")
 
             event.name = "";
             event.reason = "";
@@ -138,19 +130,20 @@ const addEvent = async () => {
         }
     } catch (error) {
         console.log(error);
+        alert("Problema al registrar evento");
     }
 }
 
 const getEvent = (event) => {
     return {
         name: event.name, reason: event.reason, description: event.description, start_date:
-        event.start_date, start_time: event.start_time, end_date: event.end_date, end_time: event.end_time
+            event.start_date, start_time: event.start_time, end_date: event.end_date, end_time: event.end_time
     }
 
 }
 
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style> 

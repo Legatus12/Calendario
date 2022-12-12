@@ -21,10 +21,6 @@
         </div>
         <AddEvent />
     </div>
-
-
-
-
 </template>
   
 <script setup>
@@ -37,6 +33,7 @@ import Month from './Month.vue';
 import AddEvent from "./AddEvent/AddEvent.vue";
 
 const selectedComponent = shallowRef(Day);
+
 const options = [
     { text: 'Day', value: Day },
     { text: 'Week', value: Week },
@@ -93,6 +90,6 @@ const getNextDay = () => {
 }
 
 .component {
-    @aplly border-solid border-2 border-black rounded-full
+    @apply border-solid border-2 border-black rounded-full
 }
 </style>
