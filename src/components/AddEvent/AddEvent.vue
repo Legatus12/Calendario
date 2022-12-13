@@ -114,7 +114,7 @@ const addEvent = async () => {
     try {
         if (event.name && event.reason && event.description && event.start_date && event.start_time && event.end_date && event.end_time) {
             const res = await axios.post(`http://localhost:3000/events/`, getEvent(event));
-            // emits("SendEvent", event); futuro uso del programa
+            emits("SendEvent", event); 
 
             alert("Evento registrado con éxito")
 

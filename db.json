@@ -2,7 +2,8 @@
   "events": [
     {
       "id": 1,
-      "hola": "prueba"
+      "name": "prueba",
+      "start_date": "2022-12-12"
     },
     {
       "name": "Reserva oficial",
@@ -15,44 +16,34 @@
       "id": 2
     },
     {
-      "name": "asdfas",
-      "reason": "asdfasd",
-      "description": "asdfasfsd",
-      "start_date": "2022-12-02",
-      "start_time": "17:25",
-      "end_date": "2022-12-01",
-      "end_time": "18:26",
+      "name": "prueba2",
+      "reason": "sdfasf",
+      "description": "asdfasf",
+      "start_date": "2022-12-13",
+      "start_time": "09:55",
+      "end_date": "2022-12-13",
+      "end_time": "09:56",
       "id": 3
     },
     {
-      "name": "asdfasfas",
-      "reason": "asdfasfas",
-      "description": "asfasfasf",
-      "start_date": "2022-12-01",
-      "start_time": "17:28",
-      "end_date": "2022-12-09",
-      "end_time": "17:30",
+      "name": "prueba3",
+      "reason": "dsfasf",
+      "description": "fadfasdfa",
+      "start_date": "2022-12-08",
+      "start_time": "10:13",
+      "end_date": "2022-12-10",
+      "end_time": "10:13",
       "id": 4
     },
     {
-      "name": "asdfsaasdf",
-      "reason": "asasdfasdf",
-      "description": "asasdfasf",
-      "start_date": "2022-12-02",
-      "start_time": "17:36",
-      "end_date": "2022-12-03",
-      "end_time": "17:36",
+      "name": "prueba4",
+      "reason": "sdfas",
+      "description": "fasdfasf",
+      "start_date": "2022-12-14",
+      "start_time": "10:14",
+      "end_date": "2022-12-16",
+      "end_time": "10:15",
       "id": 5
-    },
-    {
-      "name": "asdfas",
-      "reason": "asdfas",
-      "description": "asfdas",
-      "start_date": "2022-12-02",
-      "start_time": "17:39",
-      "end_date": "2022-12-01",
-      "end_time": "17:40",
-      "id": 6
     }
   ]
 }
