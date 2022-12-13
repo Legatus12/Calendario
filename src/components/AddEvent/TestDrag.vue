@@ -35,7 +35,7 @@
     </div>
     <button type="button" @click="test"
         class="mt-10 w-full justify-center rounded-md border border-transparent  bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-300 focus:outline-none">test</button>
-    <button type="button" 
+    <button type="button"
         class="mt-10 w-full justify-center rounded-md border border-transparent  bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-300 focus:outline-none">Borrar</button>
 </template>
 
@@ -44,14 +44,14 @@
 import AddEvent from './AddEvent.vue';
 import axios from "axios";
 
-import { onBeforeMount, onMounted, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 
 const items = ref([])
-const bd = ref([]);
+const db = ref([]);
 
-const test = () => {
+const eventsInitials = () => {
 
-    bd.value.forEach(element => {
+    db.value.forEach(element => {
 
         items.value.push({ id: element.id, title: element.name, list: parseInt(element.start_date.substring(element.start_date.length - 2)) });
     });
@@ -63,24 +63,32 @@ const getList = (list) => {
 }
 
 const startDrag = (event, item) => {
-    console.log(item)
     event.dataTransfer.dropEffect = "move"
     event.dataTransfer.effectAllowed = "move"
     event.dataTransfer.setData("itemID", item.id)
 }
 
-const onDrop = (event, list) => {
+const onDrop = async (event, list) => {
     const itemID = event.dataTransfer.getData("itemID")
     const item = items.value.find((el) => el.id == itemID)
     item.list = list;
+    console.log(item);
+
+    await axios.patch(`http://localhost:3000/events/${item.id}`, {
+        "start_date": db.value.reduce((acc, el) => {
+            if (el.id == item.id)
+                acc += el.start_date.substring(0, el.start_date.length - 2) + item.list;
+            return acc;
+        }, "")
+    });
 }
 
-const updateEvent = async () => {
+const loadEvent = async () => {
 
     try {
         const res = await axios.get(`http://localhost:3000/events/`);
-        bd.value = res.data;
-
+        db.value = res.data;
+        eventsInitials();
     } catch (error) {
         console.log(error);
         alert("Problema al traer registros");
@@ -88,14 +96,7 @@ const updateEvent = async () => {
 }
 
 onBeforeMount(() => {
-    updateEvent();
-
-})
-
-onMounted(() => {
-
-    // console.log(bd.value);
-
+    loadEvent();
 })
 
 </script>
