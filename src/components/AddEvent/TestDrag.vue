@@ -1,6 +1,6 @@
 <template>
     <div>
-        <AddEvent />
+        <AddEvent @SendEvent="addEvent" />
     </div>
     <div class="flex flex-row">
 
@@ -33,10 +33,11 @@
             </div>
         </div>
     </div>
-    <button type="button" @click="test"
-        class="mt-10 w-full justify-center rounded-md border border-transparent  bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-300 focus:outline-none">test</button>
-    <button type="button"
-        class="mt-10 w-full justify-center rounded-md border border-transparent  bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-300 focus:outline-none">Borrar</button>
+    <div class="flex justify-center  bg-blue-500 w-20 h-12 rounded-full" @drop="deleteEvent($event)" @dragenter.prevent
+        @dragover.prevent>
+        <h1 class="mt-3">P</h1>
+    </div>
+
 </template>
 
 <script setup>
@@ -53,9 +54,13 @@ const eventsInitials = () => {
 
     db.value.forEach(element => {
 
-        items.value.push({ id: element.id, title: element.name, list: parseInt(element.start_date.substring(element.start_date.length - 2)) });
+        items.value.push({ id: element.id, title: element.name, list: changeList(element) });
     });
 
+}
+
+const changeList = (element) => {
+    return parseInt(element.start_date.substring(element.start_date.length - 2))
 }
 
 const getList = (list) => {
@@ -72,15 +77,19 @@ const onDrop = async (event, list) => {
     const itemID = event.dataTransfer.getData("itemID")
     const item = items.value.find((el) => el.id == itemID)
     item.list = list;
-    console.log(item);
 
-    await axios.patch(`http://localhost:3000/events/${item.id}`, {
-        "start_date": db.value.reduce((acc, el) => {
-            if (el.id == item.id)
-                acc += el.start_date.substring(0, el.start_date.length - 2) + item.list;
-            return acc;
-        }, "")
-    });
+    try {
+        await axios.patch(`http://localhost:3000/events/${item.id}`, {
+            "start_date": db.value.reduce((acc, el) => {
+                if (el.id == item.id)
+                    acc += el.start_date.substring(0, el.start_date.length - 2) + item.list;
+
+                return acc;
+            }, "")
+        });
+    } catch (error) {
+        alert("Problema al cambiar el evento")
+    }
 }
 
 const loadEvent = async () => {
@@ -90,9 +99,25 @@ const loadEvent = async () => {
         db.value = res.data;
         eventsInitials();
     } catch (error) {
-        console.log(error);
-        alert("Problema al traer registros");
+        alert("Problema al traer eventos");
     }
+}
+
+const deleteEvent = async (event) => {
+    const itemID = event.dataTransfer.getData("itemID")
+    const item = items.value.find((el) => el.id == itemID)
+
+    try {
+        await axios.delete(`http://localhost:3000/events/${item.id}`)
+        item.list = null;
+    } catch {
+        alert("Problema al borrar evento");
+    }
+}
+
+const addEvent = (event) => {
+    items.value.push({ id: event.id, title: event.name, list: changeList(event) });
+    db.value.push(event);
 }
 
 onBeforeMount(() => {

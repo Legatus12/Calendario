@@ -55,7 +55,7 @@
                                                     required><br>
 
                                                 <div class="mt-5">
-                                                    <label class="mr-5" for="start">Inicio:</label>
+                                                    <label class="mr-5" for="start">Fecha:</label>
 
                                                     <input v-model="event.start_date"
                                                         class="w-32 h-7 border border-blue-600 rounded" type="date"
@@ -64,6 +64,8 @@
                                                         class="w-20 h-7 border border-blue-600 ml-5 rounded" type="time"
                                                         id="start" required>
                                                 </div>
+
+                                                <!-- Fecha fin para una futura funcionalidad 
                                                 <div class="mt-5">
                                                     <label class="mr-9" for="end">Fin:</label>
 
@@ -75,6 +77,7 @@
                                                         class="w-20 h-7 border border-blue-600 ml-5 rounded" type="time"
                                                         id="end" required><br>
                                                 </div>
+                                                -->
 
                                                 <div class="flex flex-row ">
                                                     <button type="button" @click="dialog = false"
@@ -101,7 +104,7 @@ import { ref, reactive } from 'vue';
 import axios from "axios";
 
 const dialog = ref();
-const event = reactive({ name: "", reason: "", description: "", start_date: "", start_time: "", end_date: "", end_time: "" });
+const event = reactive({ name: "", reason: "", description: "", start_date: "", start_time: ""});
 
 const emits = defineEmits(["SendEvent"])
 
@@ -112,9 +115,10 @@ const addEvent = async () => {
     const prueba = new Date("2022-12-12");
             console.log(prueba);*/
     try {
-        if (event.name && event.reason && event.description && event.start_date && event.start_time && event.end_date && event.end_time) {
+        if (event.name && event.reason && event.description && event.start_date && event.start_time) {
             const res = await axios.post(`http://localhost:3000/events/`, getEvent(event));
-            emits("SendEvent", event); 
+
+            emits("SendEvent", res.data);
 
             alert("Evento registrado con éxito")
 
@@ -123,8 +127,6 @@ const addEvent = async () => {
             event.description = "";
             event.start_date = "";
             event.start_time = "";
-            event.end_date = "";
-            event.end_time = "";
 
             dialog.value = false;
         }
@@ -137,7 +139,7 @@ const addEvent = async () => {
 const getEvent = (event) => {
     return {
         name: event.name, reason: event.reason, description: event.description, start_date:
-            event.start_date, start_time: event.start_time, end_date: event.end_date, end_time: event.end_time
+            event.start_date, start_time: event.start_time
     }
 
 }
