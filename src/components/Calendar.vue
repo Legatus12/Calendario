@@ -8,11 +8,15 @@
             </select>
 
             <div class="button-container">
-                <button class="date-button" @click="getPreviousDay">&lt;</button>
+                <button class="date-button" @click="getPrevious">&lt;</button>
 
-                <div>{{ selectedDate.day }} / {{ selectedDate.month + 1 }} / {{ selectedDate.year }}</div>
+                <div v-if="selectedComponent == Day">{{ selectedDate.day }} / {{ selectedDate.month + 1 }} / {{ selectedDate.year }}</div>
+                <div v-if="selectedComponent == Week">
+                    
+                </div>
+                <div v-if="selectedComponent == Month">{{ selectedDate.month + 1 }}</div>
 
-                <button class="date-button" @click="getNextDay">&gt;</button>
+                <button class="date-button" @click="getNext">&gt;</button>
             </div>
         </div>
         
@@ -43,25 +47,58 @@ const options = [
 
 const currentDate = (new Date());
 
-
 const selectedDate = reactive({ Date: currentDate, day: currentDate.getDate(), month: currentDate.getMonth(), year: currentDate.getFullYear() });
 
+const getPrevious = () => {
 
-const getPreviousDay = () => {
+    switch (selectedComponent.value) {
+        case Day:
+            selectedDate.Date.setDate(selectedDate.Date.getDate() - 1);
+            break;
 
-    selectedDate.Date.setDate(selectedDate.Date.getDate() - 1);
+        case Week:
+            selectedDate.Date.setDate(selectedDate.Date.getDate() - 7, selectedDate.Date.getMonth(), selectedDate.Date.getFullYear());
+            break;
+
+        case Month:
+            selectedDate.Date.setDate(1);
+            selectedDate.Date.setMonth(selectedDate.Date.getMonth()-1);
+            break;
+    
+        default:
+            break;
+    }
+
     selectedDate.day = selectedDate.Date.getDate();
-    selectedDate.month = currentDate.getMonth();
-    selectedDate.year = currentDate.getFullYear();
-    console.log(selectedDate.Date)
+    selectedDate.month = selectedDate.Date.getMonth();
+    selectedDate.year = selectedDate.Date.getFullYear();
+    console.log(selectedDate.Date);
 }
 
-const getNextDay = () => {
-    selectedDate.Date.setDate(selectedDate.Date.getDate() + 1);
+const getNext = () => {
+
+    switch (selectedComponent.value) {
+        case Day:
+            selectedDate.Date.setDate(selectedDate.Date.getDate() + 1);
+            break;
+
+        case Week:
+            selectedDate.Date.setDate(selectedDate.Date.getDate() + 7, selectedDate.Date.getMonth(), selectedDate.Date.getFullYear());
+            break;
+
+        case Month:
+            selectedDate.Date.setDate(1);
+            selectedDate.Date.setMonth(selectedDate.Date.getMonth()+1);
+            break;
+    
+        default:
+            break;
+    }
+
     selectedDate.day = selectedDate.Date.getDate();
-    selectedDate.month = currentDate.getMonth();
-    selectedDate.year = currentDate.getFullYear();
-    console.log(selectedDate.Date)
+    selectedDate.month = selectedDate.Date.getMonth();
+    selectedDate.year = selectedDate.Date.getFullYear();
+    console.log(selectedDate.Date);
 }
 
 
