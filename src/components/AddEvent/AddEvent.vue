@@ -108,16 +108,15 @@ const event = reactive({ name: "", reason: "", description: "", start_date: "", 
 
 const emits = defineEmits(["SendEvent"])
 
-
-
 const addEvent = async () => {
     /*    se puede pasar de string a formato fecha
     const prueba = new Date("2022-12-12");
             console.log(prueba);*/
     try {
+        //si esta todo ok se sube a la BBDD
         if (event.name && event.reason && event.description && event.start_date && event.start_time) {
             const res = await axios.post(`http://localhost:3000/events/`, getEvent(event));
-
+            //con todo se envia el evento con emit
             emits("SendEvent", res.data);
 
             alert("Evento registrado con éxito")
@@ -136,6 +135,7 @@ const addEvent = async () => {
     }
 }
 
+//información que contiene el evento
 const getEvent = (event) => {
     return {
         name: event.name, reason: event.reason, description: event.description, start_date:

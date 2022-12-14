@@ -30,6 +30,7 @@
             <div v-for="item in getList(15)" :key="item.id" class="drag-el" draggable="true"
                 @dragstart="startDrag($event, item)">
                 {{ item.title }}
+            <button class="options">...</button>
             </div>
         </div>
     </div>
@@ -47,67 +48,57 @@ import axios from "axios";
 
 import { onBeforeMount, ref } from "vue";
 
+
 const items = ref([])
-const db = ref([]);
 
-const eventsInitials = () => {
-
-    db.value.forEach(element => {
-
-        items.value.push({ id: element.id, title: element.name, list: changeList(element) });
-    });
-
-}
-
+// método para cambiar el numero de la lista a la que pertenece según 
+// donde se tira, se usa el dia del string 
 const changeList = (element) => {
     return parseInt(element.start_date.substring(element.start_date.length - 2))
 }
-
+//metodos de uso propios de draggable
 const getList = (list) => {
     return items.value.filter((el) => el.list == list)
 }
 
+//inicio del drag
 const startDrag = (event, item) => {
     event.dataTransfer.dropEffect = "move"
     event.dataTransfer.effectAllowed = "move"
     event.dataTransfer.setData("itemID", item.id)
 }
 
+// cuando se suelta el drag
 const onDrop = async (event, list) => {
+    //getData método propio del dragable para obtener la id del objeto 
     const itemID = event.dataTransfer.getData("itemID")
+    // buscamos y encontramos el item que corresponde a la id
     const item = items.value.find((el) => el.id == itemID)
     item.list = list;
 
     try {
-        await axios.patch(`http://localhost:3000/events/${item.id}`, {
-            "start_date": db.value.reduce((acc, el) => {
-                if (el.id == item.id)
-                    acc += el.start_date.substring(0, el.start_date.length - 2) + item.list;
+        //buscamos el item en la base de datos y lo actualizamos con la fecha segundo donde se ha tirado
+        const res = await axios.get(`http://localhost:3000/events/${item.id}`);
 
-                return acc;
-            }, "")
+        await axios.patch(`http://localhost:3000/events/${item.id}`, {
+            "start_date": res.data.start_date.substring(0, res.data.start_date.length - 2) + item.list
         });
     } catch (error) {
+        console.log(error)
         alert("Problema al cambiar el evento")
     }
 }
 
-const loadEvent = async () => {
+// Para manejar lo eventos añadir, borrar  y modificar
 
-    try {
-        const res = await axios.get(`http://localhost:3000/events/`);
-        db.value = res.data;
-        eventsInitials();
-    } catch (error) {
-        alert("Problema al traer eventos");
-    }
-}
-
+// Cuando cae un evento en la papelera
 const deleteEvent = async (event) => {
+
     const itemID = event.dataTransfer.getData("itemID")
     const item = items.value.find((el) => el.id == itemID)
 
     try {
+        //lo borramos en la base de datos y la lista que estaba
         await axios.delete(`http://localhost:3000/events/${item.id}`)
         item.list = null;
     } catch {
@@ -115,14 +106,36 @@ const deleteEvent = async (event) => {
     }
 }
 
+// cuando completamos el registro del formulario recibimos el evento en addEvent
 const addEvent = (event) => {
+    // se carga directamente en el array que corresponda y ya sale por pantalla 
     items.value.push({ id: event.id, title: event.name, list: changeList(event) });
-    db.value.push(event);
+
 }
+
+//  Para mantener la pagina actualiza (al arrancar) con los eventos de la base de datos 
 
 onBeforeMount(() => {
     loadEvent();
 })
+
+const loadEvent = async () => {
+
+    try {
+
+        //recojo la información de la base de datos
+        const res = await axios.get(`http://localhost:3000/events/`);
+
+        //recorro la información que hemos recibido y pusheo lo items en la listas según el dia
+        res.data.forEach(element => {
+            items.value.push({ id: element.id, title: element.name, list: changeList(element) });
+        });
+
+    } catch (error) {
+        console.log(error)
+        alert("Problema al traer eventos");
+    }
+}
 
 </script>
 
@@ -132,7 +145,7 @@ onBeforeMount(() => {
 }
 
 .drag-el {
-    @apply bg-blue-400 text-white p-1 mb-3
+    @apply bg-blue-400 text-white p-1 mb-3 
 }
 
 .drag-el:nth-last-of-type(1) {
