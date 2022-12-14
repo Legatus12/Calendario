@@ -2,7 +2,7 @@
     <div class="main-container">
         <div class="header-container">
             <select v-model="selectedComponent" class="select">
-                <option v-for="option in options" v-bind:value="option.value">
+                <option v-for="option in options" :value="option.value">
                     {{ option.text }}
                 </option>
             </select>
@@ -11,17 +11,19 @@
                 <button class="date-button" @click="getPrevious">&lt;</button>
 
                 <div v-if="selectedComponent == Day">{{ selectedDate.day }} / {{ selectedDate.month + 1 }} / {{ selectedDate.year }}</div>
+
                 <div v-if="selectedComponent == Week">
-                    
+                    {{ selectedDate.weekStart }} <br> {{ selectedDate.weekEnd }}
                 </div>
-                <div v-if="selectedComponent == Month">{{ selectedDate.month + 1 }}</div>
+                
+                <div v-if="selectedComponent == Month">{{ selectedDate.month + 1 }} / {{ selectedDate.year }}</div>
 
                 <button class="date-button" @click="getNext">&gt;</button>
             </div>
         </div>
         
         <div class="body-container">
-            <component v-bind:is="selectedComponent" />
+            <component :is="selectedComponent" />
         </div>
     </div>
 
@@ -47,7 +49,19 @@ const options = [
 
 const currentDate = (new Date());
 
-const selectedDate = reactive({ Date: currentDate, day: currentDate.getDate(), month: currentDate.getMonth(), year: currentDate.getFullYear() });
+let startAux = new Date();
+startAux.setDate(startAux.getDate()-startAux.getDay()+1)
+let endAux = new Date();
+endAux.setDate(endAux.getDate()-endAux.getDay()+7)
+
+const selectedDate = reactive({ 
+    Date: currentDate, 
+    day: currentDate.getDate(), 
+    month: currentDate.getMonth(), 
+    year: currentDate.getFullYear(), 
+    weekStart: startAux,
+    weekEnd: endAux
+});
 
 const getPrevious = () => {
 
@@ -72,7 +86,13 @@ const getPrevious = () => {
     selectedDate.day = selectedDate.Date.getDate();
     selectedDate.month = selectedDate.Date.getMonth();
     selectedDate.year = selectedDate.Date.getFullYear();
-    console.log(selectedDate.Date);
+    startAux = new Date(selectedDate.Date)
+    startAux.setDate(startAux.getDate()-startAux.getDay()+1)
+    selectedDate.weekStart = new Date(startAux);
+    endAux = new Date(selectedDate.Date)
+    endAux.setDate(endAux.getDate()-endAux.getDay()+7)
+    selectedDate.weekEnd = new Date(endAux);
+    console.log(selectedDate.Date)
 }
 
 const getNext = () => {
@@ -98,9 +118,14 @@ const getNext = () => {
     selectedDate.day = selectedDate.Date.getDate();
     selectedDate.month = selectedDate.Date.getMonth();
     selectedDate.year = selectedDate.Date.getFullYear();
-    console.log(selectedDate.Date);
+    startAux = new Date(selectedDate.Date)
+    startAux.setDate(startAux.getDate()-startAux.getDay()+1)
+    selectedDate.weekStart = new Date(startAux);
+    endAux = new Date(selectedDate.Date)
+    endAux.setDate(endAux.getDate()-endAux.getDay()+7)
+    selectedDate.weekEnd = new Date(endAux);
+    console.log(selectedDate.Date)
 }
-
 
 </script>
 
