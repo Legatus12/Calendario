@@ -31,7 +31,7 @@
         </div>
 
         <div class="body-container">
-            <component :is="selectedComponent" :loadedDays="selectedDate.Date "/>
+            <component :is="selectedComponent" :loadedDay="selectedDate"/>
         </div>
     </div>
 </template>
