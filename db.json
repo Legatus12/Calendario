@@ -2,27 +2,11 @@
   "events": [
     {
       "name": "edu",
-      "reason": "sdfas",
-      "description": "fasdfdas",
-      "start_date": "2022-12-12",
-      "start_time": "13:57",
-      "id": 1
-    },
-    {
-      "name": "andres ",
-      "reason": "asdsafas",
-      "description": "dsasfdqs",
-      "start_date": "2022-12-13",
-      "start_time": "14:01",
-      "id": 2
-    },
-    {
-      "name": "pepe",
-      "reason": "dsaasdfas",
-      "description": "asfdasfd",
+      "reason": "dasfa",
+      "description": "fasdfsa",
       "start_date": "2022-12-15",
-      "start_time": "16:58",
-      "id": 3
+      "start_time": "10:09",
+      "id": 1
     }
   ]
 }

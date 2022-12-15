@@ -30,26 +30,35 @@
             <div v-for="item in getList(15)" :key="item.id" class="drag-el" draggable="true"
                 @dragstart="startDrag($event, item)">
                 {{ item.title }}
-            <button class="options">...</button>
+                <OptionEvent @SendDelete="deleteEvent(item)" @SendEdit="editEvent" />
+                <FormEvent :dialog="dialog" @CloseModal="closeModal" @SendEvent="" />
             </div>
         </div>
     </div>
+    <!-- Papelera donde lanza objeto a borrar
     <div class="flex justify-center  bg-blue-500 w-20 h-12 rounded-full" @drop="deleteEvent($event)" @dragenter.prevent
         @dragover.prevent>
         <h1 class="mt-3">P</h1>
     </div>
-
+    -->
 </template>
 
 <script setup>
 
 import AddEvent from './AddEvent.vue';
-import axios from "axios";
+import OptionEvent from './OptionEvent.vue';
+import FormEvent from './FormEvent.vue';
 
+import axios from "axios";
 import { onBeforeMount, ref } from "vue";
 
 
 const items = ref([])
+const dialog = ref();
+
+const closeModal = (boolean) => {
+    dialog.value = boolean;
+}
 
 // método para cambiar el numero de la lista a la que pertenece según 
 // donde se tira, se usa el dia del string 
@@ -94,13 +103,14 @@ const onDrop = async (event, list) => {
 // Cuando cae un evento en la papelera
 const deleteEvent = async (event) => {
 
-    const itemID = event.dataTransfer.getData("itemID")
-    const item = items.value.find((el) => el.id == itemID)
 
     try {
         //lo borramos en la base de datos y la lista que estaba
-        await axios.delete(`http://localhost:3000/events/${item.id}`)
-        item.list = null;
+        await axios.delete(`http://localhost:3000/events/${event.id}`)
+        //null en list elimina el elemento del contenedor e id a null para evitar repetir el id
+        event.list = null;
+        event.id = null;
+        alert("Evento borrado con exito")
     } catch {
         alert("Problema al borrar evento");
     }
@@ -108,9 +118,13 @@ const deleteEvent = async (event) => {
 
 // cuando completamos el registro del formulario recibimos el evento en addEvent
 const addEvent = (event) => {
-    // se carga directamente en el array que corresponda y ya sale por pantalla 
+    // se carga directamente en el array que corresponda y ya lo vemos por pantalla 
     items.value.push({ id: event.id, title: event.name, list: changeList(event) });
 
+}
+
+const editEvent = () => {
+    dialog.value=true;
 }
 
 //  Para mantener la pagina actualiza (al arrancar) con los eventos de la base de datos 
@@ -145,7 +159,7 @@ const loadEvent = async () => {
 }
 
 .drag-el {
-    @apply bg-blue-400 text-white p-1 mb-3 
+    @apply bg-blue-400 text-white p-1 mb-3
 }
 
 .drag-el:nth-last-of-type(1) {
