@@ -29,7 +29,7 @@
 }
 
 .period{
-    @apply h-16 border-solid border-b-2 border-black
+    @apply h-16 border-solid border-b-[1px] border-[#aeaeae]
 }
 
 </style>
