@@ -29,7 +29,7 @@
                 <button class="option-button"> + añadir evento</button>
             </div>
         </div>
-        
+
         <div class="body-container">
             <component :is="selectedComponent" :loadedDays="selectedDate.Date "/>
         </div>
@@ -46,6 +46,7 @@ import Month from './Month.vue';
 import AddEvent from "./AddEvent/AddEvent.vue";
 
 const selectedComponent = shallowRef(Day);
+
 const options = [
     { text: 'día', value: Day },
     { text: 'semana', value: Week },
@@ -185,6 +186,7 @@ option{
 
 .body-container::-webkit-scrollbar {
   display: none;
+
 }
 
 .body-container  {

@@ -1,12 +1,15 @@
 <template>
   <div class="p-4 w-full h-full">
-    <Calendar />
+    <TestDrag />
+
   </div>
 </template>
 
 <script setup>
 
-import Calendar from './components/Calendar.vue';
+
+import TestDrag from './components/AddEvent/TestDrag.vue';
+//import Calendar from './components/Calendar.vue';
 
 </script>
 
