@@ -12,24 +12,26 @@
             <div class="date-container">
                 <button class="date-button" @click="getPrevious"><b>&lt;</b></button>
 
+                <div>{{ date }}</div>
+                <!--
                 <div v-if="selectedComponent == Day">{{ date }}</div>
 
                 <div v-if="selectedComponent == Week" class="">
-                     {{ date  }}
+                     {{ date }}
                 </div>
                 
                 <div v-if="selectedComponent == Month">{{ date }}</div>
-
+                -->
                 <button class="date-button" @click="getNext"><b>&gt;</b></button>
             </div>
 
             <div class="option-container">
-                <button class="option-button"> + añadir evento</button>
+                <AddEvent />
             </div>
         </div>
 
         <div class="body-container">
-            <component :is="selectedComponent" :loadedDays="a"/>
+            <component :is="selectedComponent" :range="null"/>
         </div>
     </div>
 </template>
@@ -41,12 +43,15 @@ import { ref, shallowRef, watch } from "vue";
 import Day from './Day.vue';
 import Week from './Week.vue';
 import Month from './Month.vue';
-import AddEvent from "./AddEvent/AddEvent.vue";
-import dayjs from 'dayjs';
-import calendar from 'dayjs/plugin/calendar'
-dayjs.extend(calendar)
 
-console.log(dayjs().calendar().nextDay)
+import AddEvent from "./AddEvent/AddEvent.vue";
+
+import dayjs from 'dayjs';
+import calendar from 'dayjs/plugin/calendar';
+
+dayjs.extend(calendar);
+
+//
 
 const selectedComponent = shallowRef(Day);
 
@@ -58,19 +63,58 @@ const options = [
 
 let date = ref(dayjs());
 
+const getWeekRange = (date) => {
+    let range = [];
+    for (let i = 1; i <= 7; i++) {
+        range.push(date.startOf('week').add(i, 'day'))
+    }
+    return range;
+}
+
+const getMonthRange = (date) => {
+    let range = [];
+    for (let i = 0; i < date.daysInMonth(); i++) {
+        range.push(date.startOf('month').add(i, 'day'))
+    }
+    if(range[0].day() != 0){
+        let i = 1;
+        let aux = [];
+        do {
+            aux.push(range[0].startOf('week').add(i, 'day'));
+            i++;
+        } while (i != range[0].day());
+        range = [...aux, ...range]
+    }
+    /*
+    if(range[range.length - 1].day() != 6){
+        console.log(range[range.length - 1])
+        let i = 1;
+        let aux = [];
+        do {
+            aux.push(range[0].add(i, 'day'));
+            i++;
+        } while (range[0].add(i, 'day').day() != 7);
+        range = [...range, ...aux]
+    }
+    */
+    return range;
+}
+
+console.log(getWeekRange(date.value))
+console.log(getMonthRange(date.value))
+
 const getPrevious = () => {
     switch (selectedComponent.value) {
         case Day:
-            date.value = date.value.subtract(1, 'day')
-            console.log(dayjs("2022-12-16").endOf('week').add(1, 'day'))
+            date.value = date.value.subtract(1, 'day');
             break;
 
         case Week:
-            date.value = date.value.subtract(1, 'week')
+            date.value = date.value.subtract(1, 'week');
             break;
 
         case Month:
-            date.value = date.value.subtract(1, 'month')
+            date.value = date.value.subtract(1, 'month');
             break;
     }
 }
@@ -78,21 +122,21 @@ const getPrevious = () => {
 const getNext = () => {
     switch (selectedComponent.value) {
         case Day:
-            date.value = date.value.add(1, 'day')
+            date.value = date.value.add(1, 'day');
             break;
 
         case Week:
-        date.value = date.value.add(1, 'week')
+        date.value = date.value.add(1, 'week');
             break;
 
         case Month:
-        date.value = date.value.add(1, 'month')
+        date.value = date.value.add(1, 'month');
             break;
     }
 }
 
 watch(date,(nv) => {
-    console.log(nv.$d)
+    console.log(nv.$d);
 })
 
 </script>
@@ -111,7 +155,7 @@ watch(date,(nv) => {
 }
 
 .select {
-    @apply p-4 rounded-full cursor-pointer bg-[#f6f6f6] hover:bg-[#d6d6d6]
+    @apply px-6 py-4 rounded-full cursor-pointer bg-[#f6f6f6] hover:bg-[#d6d6d6]
 }
 
 option{
@@ -123,15 +167,11 @@ option{
 }
 
 .date-button{
-    @apply w-12 h-12 rounded-full hover:bg-[#d6d6d6]
+    @apply px-6 py-4 rounded-full hover:bg-[#d6d6d6]
 }
 
 .option-container{
     @apply basis-1/3 flex justify-end p-4
-}
-
-.option-button{
-    @apply px-4 h-12 rounded-full hover:bg-[#d6d6d6]
 }
 
 .body-container {
