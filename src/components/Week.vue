@@ -28,13 +28,6 @@ const props = defineProps({
     loadedDay: Object
 });
 
-const week = ref([])
-
-for (let i = 1; i < 8; i++) {
-    let aux = new Date();
-    aux.setDate(props.loadedDay.Date.getDate()-props.loadedDay.Date.getDay()+i);
-    week.value.push(aux);
-}
 
 </script>
 

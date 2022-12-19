@@ -12,15 +12,13 @@
             <div class="date-container">
                 <button class="date-button" @click="getPrevious"><b>&lt;</b></button>
 
-                <div v-if="selectedComponent == Day">{{ selectedDate.day }} / {{ selectedDate.month + 1 }} / {{ selectedDate.year }}</div>
+                <div v-if="selectedComponent == Day">{{ date }}</div>
 
                 <div v-if="selectedComponent == Week" class="">
-                    {{ selectedDate.weekStart.getDate() }} / {{ selectedDate.weekStart.getMonth() + 1 }} / {{ selectedDate.weekStart.getFullYear() }} 
-                    <br>
-                     {{ selectedDate.weekEnd.getDate() }} / {{ selectedDate.weekEnd.getMonth() + 1 }} / {{ selectedDate.weekEnd.getFullYear() }} 
+                     {{ date  }}
                 </div>
                 
-                <div v-if="selectedComponent == Month">{{ selectedDate.monthName }} de {{ selectedDate.year }}</div>
+                <div v-if="selectedComponent == Month">{{ date }}</div>
 
                 <button class="date-button" @click="getNext"><b>&gt;</b></button>
             </div>
@@ -31,19 +29,24 @@
         </div>
 
         <div class="body-container">
-            <component :is="selectedComponent" :loadedDay="selectedDate"/>
+            <component :is="selectedComponent" :loadedDays="a"/>
         </div>
     </div>
 </template>
   
 <script setup>
 
-import { reactive, shallowRef } from "vue";
+import { ref, shallowRef, watch } from "vue";
 
 import Day from './Day.vue';
 import Week from './Week.vue';
 import Month from './Month.vue';
 import AddEvent from "./AddEvent/AddEvent.vue";
+import dayjs from 'dayjs';
+import calendar from 'dayjs/plugin/calendar'
+dayjs.extend(calendar)
+
+console.log(dayjs().calendar().nextDay)
 
 const selectedComponent = shallowRef(Day);
 
@@ -53,93 +56,44 @@ const options = [
     { text: 'mes', value: Month }
 ]
 
-const currentDate = (new Date());
-
-let startAux = new Date();
-startAux.setDate(startAux.getDate()-startAux.getDay()+1);
-let endAux = new Date();
-endAux.setDate(endAux.getDate()-endAux.getDay()+7);
-
-const selectedDate = reactive({ 
-    Date: currentDate, 
-    day: currentDate.getDate(), 
-    month: currentDate.getMonth(),
-    monthName: currentDate.toLocaleString('default', { month: 'long' }), 
-    year: currentDate.getFullYear(), 
-    weekStart: startAux,
-    weekEnd: endAux
-});
+let date = ref(dayjs());
 
 const getPrevious = () => {
-
     switch (selectedComponent.value) {
         case Day:
-            selectedDate.Date.setDate(selectedDate.Date.getDate() - 1);
-            //establece la fecha del día anterior
+            date.value = date.value.subtract(1, 'day')
+            console.log(dayjs("2022-12-16").endOf('week').add(1, 'day'))
             break;
 
         case Week:
-            selectedDate.Date.setDate(selectedDate.Date.getDate() - 7, selectedDate.Date.getMonth(), selectedDate.Date.getFullYear());
-            //establece la fecha del día de la semana seleccionado actualmente de la semana anterior
+            date.value = date.value.subtract(1, 'week')
             break;
 
         case Month:
-            selectedDate.Date.setDate(1);
-            selectedDate.Date.setMonth(selectedDate.Date.getMonth()-1);
-            //establece la fecha del dia 1 del mes anterior
-            // (dia 1 para evitar errores que se pueden producir navegando entre meses con distinto numero de días)
-            break;
-    
-        default:
+            date.value = date.value.subtract(1, 'month')
             break;
     }
-
-    update();
-
-    /**/console.log(selectedDate.Date);
 }
 
 const getNext = () => {
-
     switch (selectedComponent.value) {
         case Day:
-            selectedDate.Date.setDate(selectedDate.Date.getDate() + 1);
-            // establecemos la fecha del día siguiente
+            date.value = date.value.add(1, 'day')
             break;
 
         case Week:
-            selectedDate.Date.setDate(selectedDate.Date.getDate() + 7, selectedDate.Date.getMonth(), selectedDate.Date.getFullYear());
-            // establecemos la fecha del día de la semana seleccionado actualmente de la semana siguiente
+        date.value = date.value.add(1, 'week')
             break;
 
         case Month:
-            selectedDate.Date.setDate(1);
-            selectedDate.Date.setMonth(selectedDate.Date.getMonth()+1);
-            // establecemos la fecha del dia 1 del mes siguiente
-            // (dia 1 para evitar errores que se pueden producir navegando entre meses con distinto numero de días)
-            break;
-    
-        default:
+        date.value = date.value.add(1, 'month')
             break;
     }
-
-    update();
-
-    /**/console.log(selectedDate.Date);
 }
 
-const update = () => {
-    selectedDate.day = selectedDate.Date.getDate();
-    selectedDate.month = selectedDate.Date.getMonth();
-    selectedDate.monthName = selectedDate.Date.toLocaleString('default', { month: 'long' });
-    selectedDate.year = selectedDate.Date.getFullYear();
-    startAux = new Date(selectedDate.Date);
-    endAux = new Date(selectedDate.Date);
-    startAux.setDate(startAux.getDate()-startAux.getDay()+1)
-    selectedDate.weekStart = new Date(startAux);
-    endAux.setDate(endAux.getDate()-endAux.getDay()+7)
-    selectedDate.weekEnd = new Date(endAux);
-}
+watch(date,(nv) => {
+    console.log(nv.$d)
+})
 
 </script>
 
