@@ -1,6 +1,6 @@
 <template>
   <div class="p-4 w-full h-full">
-    <TestDrag />
+    <Calendar />
 
   </div>
 </template>
@@ -9,6 +9,7 @@
 
 
 import TestDrag from './components/AddEvent/TestDrag.vue';
+import Calendar from './components/Calendar.vue';
 //import Calendar from './components/Calendar.vue';
 
 </script>

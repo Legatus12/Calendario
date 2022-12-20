@@ -1,9 +1,6 @@
 <template>
-    <div class="flex justify-end mr-10 mb-10">
-        <button @click="dialog = true" class="rounded-full bg-blue-600 text-white text-5xl w-12 h-12 hover:bg-blue-300"
-            type="button">+</button>
-    </div>
-
+        
+    <button @click="dialog = true" class="option-button" type="button"> + añadir evento</button>
     <FormEvent :dialog="dialog" @CloseModal="closeModal" @SendEvent="receiveEvent" />
 
 </template>
@@ -74,5 +71,9 @@ const getEvent = (event) => {
 </script>
 
 <style scoped>
+
+.option-button{
+    @apply px-6 py-4 rounded-full hover:bg-[#d6d6d6]
+}
 
 </style> 

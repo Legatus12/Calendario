@@ -12,38 +12,61 @@
             <div class="date-container">
                 <button class="date-button" @click="getPrevious"><b>&lt;</b></button>
 
-                <div v-if="selectedComponent == Day">{{ selectedDate.day }} / {{ selectedDate.month + 1 }} / {{ selectedDate.year }}</div>
+                <div v-if="selectedComponent == Day">
+                    {{ dayNames[date.subtract(1, 'day').day()] }}, {{ date.date() }} de {{ monthNames[date.month()] }} de {{ date.year() }}
+                </div>
 
                 <div v-if="selectedComponent == Week" class="">
-                    {{ selectedDate.weekStart.getDate() }} / {{ selectedDate.weekStart.getMonth() + 1 }} / {{ selectedDate.weekStart.getFullYear() }} 
-                    <br>
-                     {{ selectedDate.weekEnd.getDate() }} / {{ selectedDate.weekEnd.getMonth() + 1 }} / {{ selectedDate.weekEnd.getFullYear() }} 
+                    {{ date.startOf('week').date() }} de {{ monthNames[date.month()] }} de {{ date.year() }}
                 </div>
                 
-                <div v-if="selectedComponent == Month">{{ selectedDate.monthName }} de {{ selectedDate.year }}</div>
-
+                <div v-if="selectedComponent == Month">
+                    {{ monthNames[date.month()] }} de {{ date.year() }}
+                </div>
+                
                 <button class="date-button" @click="getNext"><b>&gt;</b></button>
             </div>
 
             <div class="option-container">
-                <button class="option-button"> + añadir evento</button>
+                <AddEvent />
             </div>
         </div>
 
         <div class="body-container">
-            <component :is="selectedComponent" :loadedDays="selectedDate.Date "/>
+            <component :is="selectedComponent" :dayNames="dayNames" :week="week" :month="month" :selectedMonth="selectedMonth" :selectedDay="selectedDay" :currentMonth="currentMonth" />
         </div>
     </div>
 </template>
   
 <script setup>
 
-import { reactive, shallowRef } from "vue";
+import { ref, shallowRef, watch, onMounted } from "vue";
 
 import Day from './Day.vue';
 import Week from './Week.vue';
 import Month from './Month.vue';
+
 import AddEvent from "./AddEvent/AddEvent.vue";
+
+import dayjs from 'dayjs';
+import calendar from 'dayjs/plugin/calendar';
+import updateLocale from 'dayjs/plugin/updateLocale';
+
+dayjs.extend(calendar);
+dayjs.extend(updateLocale);
+
+//
+
+const localeObject = {
+    name: 'es',
+    weekStart: 1,
+}
+
+dayjs.locale('es-my-settings', localeObject);
+
+console.log(dayjs().date())
+
+//
 
 const selectedComponent = shallowRef(Day);
 
@@ -53,99 +76,129 @@ const options = [
     { text: 'mes', value: Month }
 ]
 
-const currentDate = (new Date());
+let date = ref(dayjs());
 
-let startAux = new Date();
-startAux.setDate(startAux.getDate()-startAux.getDay()+1);
-let endAux = new Date();
-endAux.setDate(endAux.getDate()-endAux.getDay()+7);
+let week = ref([]);
 
-const selectedDate = reactive({ 
-    Date: currentDate, 
-    day: currentDate.getDate(), 
-    month: currentDate.getMonth(),
-    monthName: currentDate.toLocaleString('default', { month: 'long' }), 
-    year: currentDate.getFullYear(), 
-    weekStart: startAux,
-    weekEnd: endAux
-});
+let month = ref([]);
+
+const selectedMonth = ref(0);
+
+const selectedDay = ref(0);
+
+const currentMonth = dayjs().month()
+
+const dayNames = [
+    "lunes",
+    "martes",
+    "miércoles",
+    "jueves",
+    "viernes",
+    "sábado",
+    "domingo"
+]
+
+const monthNames = [
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre"
+]
+
+onMounted(() => {
+    getWeekRange(date.value);
+    getMonthRange(date.value);
+    selectedMonth.value = (date.value.month());
+    selectedDay.value = (date.value.date());
+})
+
+const getWeekRange = (date) => {
+    week.value = [];
+    for (let i = 0; i < 7; i++) {
+        week.value.push(date.startOf('week').add(i, 'day'))
+    }
+}
+
+const getMonthRange = (date) => {
+    month.value = [];
+    for (let i = 0; i < date.daysInMonth(); i++) {
+        month.value.push(date.startOf('month').add(i, 'day'))
+    }
+    
+    //si el mes no comienza en lunes...
+    if(month.value[0].day() != 1){
+        let aux = [];
+        for (let i = 0; i < month.value[0].subtract(1, 'day').day(); i++) {
+            aux.push(month.value[0].startOf('week').add(i, 'day'));
+        }
+        month.value = [...aux, ...month.value];
+    }
+    //si el mes no acaba en domingo...
+    if(month.value[month.value.length - 1].day() != 0){
+        let aux = [];
+        for (let i = 0; i < 6 - month.value[month.value.length - 1].subtract(1, 'day').day(); i++) {
+            aux.push(month.value[month.value.length - 1].add(i + 1, 'day'));
+        }
+        month.value = [...month.value, ...aux];
+    }
+}
 
 const getPrevious = () => {
-
     switch (selectedComponent.value) {
         case Day:
-            selectedDate.Date.setDate(selectedDate.Date.getDate() - 1);
-            //establece la fecha del día anterior
+            date.value = date.value.subtract(1, 'day');
             break;
 
         case Week:
-            selectedDate.Date.setDate(selectedDate.Date.getDate() - 7, selectedDate.Date.getMonth(), selectedDate.Date.getFullYear());
-            //establece la fecha del día de la semana seleccionado actualmente de la semana anterior
+            date.value = date.value.subtract(1, 'week');
             break;
 
         case Month:
-            selectedDate.Date.setDate(1);
-            selectedDate.Date.setMonth(selectedDate.Date.getMonth()-1);
-            //establece la fecha del dia 1 del mes anterior
-            // (dia 1 para evitar errores que se pueden producir navegando entre meses con distinto numero de días)
-            break;
-    
-        default:
+            date.value = date.value.subtract(1, 'month');
             break;
     }
-
-    update();
-
-    /**/console.log(selectedDate.Date);
 }
 
 const getNext = () => {
-
     switch (selectedComponent.value) {
         case Day:
-            selectedDate.Date.setDate(selectedDate.Date.getDate() + 1);
-            // establecemos la fecha del día siguiente
+            date.value = date.value.add(1, 'day');
             break;
 
         case Week:
-            selectedDate.Date.setDate(selectedDate.Date.getDate() + 7, selectedDate.Date.getMonth(), selectedDate.Date.getFullYear());
-            // establecemos la fecha del día de la semana seleccionado actualmente de la semana siguiente
+        date.value = date.value.add(1, 'week');
             break;
 
         case Month:
-            selectedDate.Date.setDate(1);
-            selectedDate.Date.setMonth(selectedDate.Date.getMonth()+1);
-            // establecemos la fecha del dia 1 del mes siguiente
-            // (dia 1 para evitar errores que se pueden producir navegando entre meses con distinto numero de días)
-            break;
-    
-        default:
+        date.value = date.value.add(1, 'month');
             break;
     }
-
-    update();
-
-    /**/console.log(selectedDate.Date);
 }
 
-const update = () => {
-    selectedDate.day = selectedDate.Date.getDate();
-    selectedDate.month = selectedDate.Date.getMonth();
-    selectedDate.monthName = selectedDate.Date.toLocaleString('default', { month: 'long' });
-    selectedDate.year = selectedDate.Date.getFullYear();
-    startAux = new Date(selectedDate.Date);
-    endAux = new Date(selectedDate.Date);
-    startAux.setDate(startAux.getDate()-startAux.getDay()+1)
-    selectedDate.weekStart = new Date(startAux);
-    endAux.setDate(endAux.getDate()-endAux.getDay()+7)
-    selectedDate.weekEnd = new Date(endAux);
-}
+watch(date,(newDate) => {
+    console.log(newDate.$d);
+    getWeekRange(newDate);
+    getMonthRange(newDate);
+    selectedMonth.value = newDate.month();
+})
+
+watch(selectedComponent,(nc) => {
+    console.log(nc);
+})
 
 </script>
 
 <style scoped>
 .main-container {
-    @apply flex flex-col w-full h-full border-solid border-[1px] border-[#aeaeae] rounded-2xl bg-[#f6f6f6]
+    @apply flex flex-col w-full h-full border-solid border-[1px] border-[#aeaeae] bg-[#f6f6f6]
 }
 
 .header-container {
@@ -153,11 +206,11 @@ const update = () => {
 }
 
 .select-container{
-    @apply basis-1/3 p-4
+    @apply basis-1/4 p-4
 }
 
 .select {
-    @apply p-4 rounded-full cursor-pointer bg-[#f6f6f6] hover:bg-[#d6d6d6]
+    @apply px-6 py-4 rounded-full cursor-pointer bg-[#f6f6f6] hover:bg-[#d6d6d6]
 }
 
 option{
@@ -165,23 +218,19 @@ option{
 }
 
 .date-container{
-    @apply basis-1/3 flex justify-between items-center p-4 gap-8
+    @apply basis-1/2 flex justify-between items-center p-4 gap-8
 }
 
 .date-button{
-    @apply w-12 h-12 rounded-full hover:bg-[#d6d6d6]
+    @apply px-6 py-4 rounded-full hover:bg-[#d6d6d6]
 }
 
 .option-container{
-    @apply basis-1/3 flex justify-end p-4
-}
-
-.option-button{
-    @apply px-4 h-12 rounded-full hover:bg-[#d6d6d6]
+    @apply basis-1/4 flex justify-end p-4
 }
 
 .body-container {
-    @apply basis-11/12 px-4 overflow-y-scroll border-solid border-t-[1px] border-[#aeaeae]
+    @apply overflow-y-scroll h-full border-solid border-t-[1px] border-[#aeaeae]
 }
 
 .body-container::-webkit-scrollbar {
