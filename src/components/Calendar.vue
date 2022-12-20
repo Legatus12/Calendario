@@ -12,16 +12,18 @@
             <div class="date-container">
                 <button class="date-button" @click="getPrevious"><b>&lt;</b></button>
 
-                <div>{{ date }}</div>
-                <!--
-                <div v-if="selectedComponent == Day">{{ date }}</div>
+                <div v-if="selectedComponent == Day">
+                    {{ dayNames[date.subtract(1, 'day').day()] }}, {{ date.date() }} de {{ monthNames[date.month()] }} de {{ date.year() }}
+                </div>
 
                 <div v-if="selectedComponent == Week" class="">
-                     {{ date }}
+                    {{ date.startOf('week').date() }} de {{ monthNames[date.month()] }} de {{ date.year() }}
                 </div>
                 
-                <div v-if="selectedComponent == Month">{{ date }}</div>
-                -->
+                <div v-if="selectedComponent == Month">
+                    {{ monthNames[date.month()] }} de {{ date.year() }}
+                </div>
+                
                 <button class="date-button" @click="getNext"><b>&gt;</b></button>
             </div>
 
@@ -31,14 +33,14 @@
         </div>
 
         <div class="body-container">
-            <component :is="selectedComponent" :range="null"/>
+            <component :is="selectedComponent" :dayNames="dayNames" :week="week" :month="month" :selectedMonth="selectedMonth" :selectedDay="selectedDay" :currentMonth="currentMonth" />
         </div>
     </div>
 </template>
   
 <script setup>
 
-import { ref, shallowRef, watch } from "vue";
+import { ref, shallowRef, watch, onMounted } from "vue";
 
 import Day from './Day.vue';
 import Week from './Week.vue';
@@ -48,8 +50,22 @@ import AddEvent from "./AddEvent/AddEvent.vue";
 
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
+import updateLocale from 'dayjs/plugin/updateLocale';
 
 dayjs.extend(calendar);
+dayjs.extend(updateLocale);
+
+//
+
+const localeObject = {
+    name: 'es',
+    weekStart: 1,
+}
+
+dayjs.locale('es-my-settings', localeObject);
+
+console.log(dayjs().startOf('week'))
+console.log(dayjs().startOf('month').add(1, 'day'))
 
 //
 
@@ -63,45 +79,78 @@ const options = [
 
 let date = ref(dayjs());
 
+let week = ref([]);
+
+let month = ref([]);
+
+const selectedMonth = ref(0);
+
+const selectedDay = ref(0);
+
+const currentMonth = dayjs().month()
+
+const dayNames = [
+    "lunes",
+    "martes",
+    "miércoles",
+    "jueves",
+    "viernes",
+    "sábado",
+    "domingo"
+]
+
+const monthNames = [
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre"
+]
+
+onMounted(() => {
+    getWeekRange(date.value);
+    getMonthRange(date.value);
+    selectedMonth.value = (date.value.month());
+    selectedDay.value = (date.value.date());
+})
+
 const getWeekRange = (date) => {
-    let range = [];
-    for (let i = 1; i <= 7; i++) {
-        range.push(date.startOf('week').add(i, 'day'))
+    week.value = [];
+    for (let i = 0; i < 7; i++) {
+        week.value.push(date.startOf('week').add(i, 'day'))
     }
-    return range;
 }
 
 const getMonthRange = (date) => {
-    let range = [];
+    month.value = [];
     for (let i = 0; i < date.daysInMonth(); i++) {
-        range.push(date.startOf('month').add(i, 'day'))
+        month.value.push(date.startOf('month').add(i, 'day'))
     }
-    if(range[0].day() != 0){
-        let i = 1;
+    
+    //si el mes no comienza en lunes...
+    if(month.value[0].day() != 1){
         let aux = [];
-        do {
-            aux.push(range[0].startOf('week').add(i, 'day'));
-            i++;
-        } while (i != range[0].day());
-        range = [...aux, ...range]
+        for (let i = 0; i < month.value[0].subtract(1, 'day').day(); i++) {
+            aux.push(month.value[0].startOf('week').add(i, 'day'));
+        }
+        month.value = [...aux, ...month.value];
     }
-    /*
-    if(range[range.length - 1].day() != 6){
-        console.log(range[range.length - 1])
-        let i = 1;
+    //si el mes no acaba en domingo...
+    if(month.value[month.value.length - 1].day() != 0){
         let aux = [];
-        do {
-            aux.push(range[0].add(i, 'day'));
-            i++;
-        } while (range[0].add(i, 'day').day() != 7);
-        range = [...range, ...aux]
+        for (let i = 0; i < 6 - month.value[month.value.length - 1].subtract(1, 'day').day(); i++) {
+            aux.push(month.value[month.value.length - 1].add(i + 1, 'day'));
+        }
+        month.value = [...month.value, ...aux];
     }
-    */
-    return range;
 }
-
-console.log(getWeekRange(date.value))
-console.log(getMonthRange(date.value))
 
 const getPrevious = () => {
     switch (selectedComponent.value) {
@@ -135,15 +184,22 @@ const getNext = () => {
     }
 }
 
-watch(date,(nv) => {
-    console.log(nv.$d);
+watch(date,(newDate) => {
+    console.log(newDate.$d);
+    getWeekRange(newDate);
+    getMonthRange(newDate);
+    selectedMonth.value = newDate.month();
+})
+
+watch(selectedComponent,(nc) => {
+    console.log(nc);
 })
 
 </script>
 
 <style scoped>
 .main-container {
-    @apply flex flex-col w-full h-full border-solid border-[1px] border-[#aeaeae] rounded-2xl bg-[#f6f6f6]
+    @apply flex flex-col w-full h-full border-solid border-[1px] border-[#aeaeae] bg-[#f6f6f6]
 }
 
 .header-container {
@@ -151,7 +207,7 @@ watch(date,(nv) => {
 }
 
 .select-container{
-    @apply basis-1/3 p-4
+    @apply basis-1/4 p-4
 }
 
 .select {
@@ -163,7 +219,7 @@ option{
 }
 
 .date-container{
-    @apply basis-1/3 flex justify-between items-center p-4 gap-8
+    @apply basis-1/2 flex justify-between items-center p-4 gap-8
 }
 
 .date-button{
@@ -171,11 +227,11 @@ option{
 }
 
 .option-container{
-    @apply basis-1/3 flex justify-end p-4
+    @apply basis-1/4 flex justify-end p-4
 }
 
 .body-container {
-    @apply basis-11/12 px-4 overflow-y-scroll border-solid border-t-[1px] border-[#aeaeae]
+    @apply basis-11/12 overflow-y-scroll border-solid border-t-[1px] border-[#aeaeae]
 }
 
 .body-container::-webkit-scrollbar {
