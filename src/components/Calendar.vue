@@ -64,8 +64,7 @@ const localeObject = {
 
 dayjs.locale('es-my-settings', localeObject);
 
-console.log(dayjs().startOf('week'))
-console.log(dayjs().startOf('month').add(1, 'day'))
+console.log(dayjs().date())
 
 //
 
@@ -231,7 +230,7 @@ option{
 }
 
 .body-container {
-    @apply basis-11/12 overflow-y-scroll border-solid border-t-[1px] border-[#aeaeae]
+    @apply overflow-y-scroll h-full border-solid border-t-[1px] border-[#aeaeae]
 }
 
 .body-container::-webkit-scrollbar {
