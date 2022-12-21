@@ -7,10 +7,7 @@
 
 <script setup>
 
-
-import TestDrag from './components/AddEvent/TestDrag.vue';
 import Calendar from './components/Calendar.vue';
-//import Calendar from './components/Calendar.vue';
 
 </script>
 
