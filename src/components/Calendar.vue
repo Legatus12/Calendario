@@ -18,7 +18,9 @@
                 </div>
 
                 <div v-if="selectedComponent == Week" class="">
-                    {{ date.startOf('week').date() }} de {{ monthNames[date.month()] }} de {{ date.year() }}
+                    {{ date.startOf('week').date() }}&nbsp;/&nbsp;{{ date.startOf('week').month() }}&nbsp;/&nbsp;{{ date.startOf('week').year() }}
+                    <br>
+                    {{ date.endOf('week').date() }}&nbsp;/&nbsp;{{ date.endOf('week').month() }}&nbsp;/&nbsp;{{ date.endOf('week').year() }}
                 </div>
 
                 <div v-if="selectedComponent == Month">
@@ -33,9 +35,12 @@
             </div>
         </div>
 
-        <div class="body-container">
-            <component :is="selectedComponent" :dayNames="dayNames" :week="week" :month="month"
-                :selectedMonth="selectedMonth" :selectedDay="selectedDay" :currentMonth="currentMonth" :list="items" />
+        <div class="component-container">
+            <component :is="selectedComponent" 
+            :dayNames="dayNames" 
+            :week="week" :month="month"
+            :selectedMonth="selectedMonth" :currentDay="currentDay" :currentMonth="currentMonth" 
+            :list="items" />
         </div>
     </div>
 </template>
@@ -83,9 +88,9 @@ let month = ref([]);
 
 const selectedMonth = ref(0);
 
-const selectedDay = ref(0);
+const currentDay = dayjs().date();
 
-const currentMonth = dayjs().month()
+const currentMonth = dayjs().month();
 
 const dayNames = [
     "lunes",
@@ -118,8 +123,7 @@ const items = ref([])
 onMounted(() => {
     getWeekRange(date.value);
     getMonthRange(date.value);
-    selectedMonth.value = (date.value.month());
-    selectedDay.value = (date.value.date());
+    selectedMonth.value = date.value.month();
 })
 // actualizar calendario 
 onBeforeMount(() => {
@@ -233,11 +237,11 @@ const changeList = (element) => {
 
 <style scoped>
 .main-container {
-    @apply flex flex-col w-full h-full border-solid border-[1px] border-[#aeaeae] bg-[#f6f6f6]
+    @apply flex flex-col w-full h-full border-solid border-[1px] border-[#aeaeae] bg-[#f6f6f6] overflow-hidden
 }
 
 .header-container {
-    @apply basis-1/12 flex justify-around items-center
+    @apply basis-1/12 flex justify-around items-center shrink
 }
 
 .select-container {
@@ -253,7 +257,7 @@ option {
 }
 
 .date-container {
-    @apply basis-1/2 flex justify-between items-center p-4 gap-8
+    @apply basis-1/2 flex justify-between items-center p-4 gap-8 text-center
 }
 
 .date-button {
@@ -264,17 +268,17 @@ option {
     @apply basis-1/4 flex justify-end p-4
 }
 
-.body-container {
+.component-container {
     @apply overflow-y-scroll h-full border-solid border-t-[1px] border-[#aeaeae]
 }
 
-.body-container::-webkit-scrollbar {
+.component-container::-webkit-scrollbar {
     display: none;
-
 }
 
-.body-container {
+.component-container {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
 </style>

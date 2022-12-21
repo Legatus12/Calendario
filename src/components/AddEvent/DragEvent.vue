@@ -94,15 +94,26 @@ const editEvent = () => {
 
 <style scoped>
 .drop-zone {
-    @apply w-32 h-36 m-auto bg-gray-500 p-3 min-h-min mb-10
+    @apply w-full h-full bg-[#f6f6f6] p-2 flex flex-col gap-2 overflow-y-scroll
 }
 
 .drag-el {
-    @apply bg-blue-400 text-white p-1 mb-3
+    @apply bg-[#aeaeae] text-[#f6f6f6] font-bold p-2 rounded-xl
 }
 
 .drag-el:nth-last-of-type(1) {
     @apply m-0
 }
+
+.drop-zone::-webkit-scrollbar {
+    display: none;
+    overflow-y: scroll;
+}
+
+.drop-zone {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 </style>
 
