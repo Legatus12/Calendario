@@ -1,18 +1,6 @@
 <template>
     <div class="week-container">
         <div class="day-container">
-            <div class="hour-container">
-                <div class="header">
-                    <div class="invisible">
-                        <div>invisible</div>
-                        <br>
-                        <div>0</div>
-                    </div>
-                </div>
-                <div class="hour" v-for="i in 24">
-                    {{ (i - 1).toString().padStart(2, '0') }}
-                </div>
-            </div>
             <div class="day" v-for="day in week">
                 <div class="header">
                     <div class="current" v-if="day.date() == currentDay && day.month() == currentMonth">
@@ -33,7 +21,7 @@
                     </div>
                 </div>
                 <!--drop zone-->
-                <DragEvent :list=list :day=day.date() /> <!-- pasar numero de day 20221220 y lista -->
+                <DragEvent :list=list :day=generateID(day) /> <!-- pasar numero de day 20221220 y lista -->
             </div>
         </div>
     </div>
@@ -51,6 +39,8 @@ const props = defineProps({
     currentDay: Number,
     list: Array,
 });
+
+const generateID = day => String(day.year()) + '-' + String(day.month() + 1).padStart(2, '0') + '-' + String(day.date()).padStart(2, '0');
 
 </script>
 
@@ -74,14 +64,6 @@ const props = defineProps({
 
 .current {
     @apply w-fit bg-[#f54f59] text-[#f6f6f6] font-black p-2 rounded-2xl
-}
-
-.hour-container{
-    @apply flex flex-col shrink-0
-}
-
-.hour{
-    @apply h-16 border-solid border-b-[1px] bg-[#f6f6f6]
 }
 
 </style>

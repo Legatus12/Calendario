@@ -18,7 +18,7 @@
                         <button class="hidden border-solid border-[1px] border-[#aeaeae] text-[#646464] px-2 rounded-full">+</button>
                     </div>
                     <!--drop zone-->
-                    <DragEvent :list=list :day=day.date() class="drop-zone" /> <!-- pasar numero de day 20221220 y lista -->
+                    <DragEvent :list=list :day=generateID(day) /> <!-- pasar numero de day 20221220 y lista -->
                 </div>
                 <div v-else class="w-full h-full p-2 bg-[#d6d6d6]">
                     {{ day.date() }}
@@ -41,6 +41,8 @@ const props = defineProps({
     list: Array,
 });
 
+const generateID = day => String(day.year()) + '-' + String(day.month() + 1).padStart(2, '0') + '-' + String(day.date()).padStart(2, '0');
+
 </script>
 
 <style scoped>
@@ -54,19 +56,19 @@ const props = defineProps({
 }
 
 .day-header{
-    @apply w-full bg-[#f6f6f6] text-center p-4
+    @apply w-full bg-[#f6f6f6] text-center p-2
 }
 
 .day-container{
-    @apply h-full grid grid-cols-7 grid-rows-6 gap-[1px] bg-[#aeaeae]
+    @apply w-full h-full grid-rows-6 grid grid-cols-7 gap-[1px] bg-[#aeaeae]
 }
 
 .day{
-    @apply w-full bg-[#f6f6f6] 
+    @apply w-full bg-[#f6f6f6]
 }
 
 .day:hover button{
-    display: block;
+    display: none;
 }
 
 </style>

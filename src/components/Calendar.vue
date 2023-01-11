@@ -17,10 +17,10 @@
                     de {{ date.year() }}
                 </div>
 
-                <div v-if="selectedComponent == Week" class="">
-                    {{ date.startOf('week').date() }}&nbsp;/&nbsp;{{ date.startOf('week').month() }}&nbsp;/&nbsp;{{ date.startOf('week').year() }}
+                <div v-if="selectedComponent == Week">
+                    {{ date.startOf('week').date() }}&nbsp;/&nbsp;{{ date.startOf('week').month() + 1 }}&nbsp;/&nbsp;{{ date.startOf('week').year() }}
                     <br>
-                    {{ date.endOf('week').date() }}&nbsp;/&nbsp;{{ date.endOf('week').month() }}&nbsp;/&nbsp;{{ date.endOf('week').year() }}
+                    {{ date.endOf('week').date() }}&nbsp;/&nbsp;{{ date.endOf('week').month() + 1 }}&nbsp;/&nbsp;{{ date.endOf('week').year() }}
                 </div>
 
                 <div v-if="selectedComponent == Month">
@@ -225,12 +225,12 @@ const loadEvent = async () => {
 
 const addEvent = (event) => {
     // se carga directamente en el array que corresponda y ya lo vemos por pantalla 
-    items.value.push({ id: event.id, title: event.name, list: changeList(event) });
+    items.value.push({ id: event.id, title: event.name, list: event.start_date });
 
 }
 
 const changeList = (element) => {
-    return parseInt(element.start_date.substring(element.start_date.length - 2))
+    return element.start_date
 }
 
 </script>

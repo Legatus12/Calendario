@@ -60,7 +60,7 @@ const onDrop = async (event, list) => {
         const res = await axios.get(`http://localhost:3000/events/${item.id}`);
 
         await axios.patch(`http://localhost:3000/events/${item.id}`, {
-            "start_date": res.data.start_date.substring(0, res.data.start_date.length - 2) + item.list
+            "start_date": list
         });
     } catch (error) {
         console.log(error)
@@ -94,7 +94,7 @@ const editEvent = () => {
 
 <style scoped>
 .drop-zone {
-    @apply w-full h-full bg-[#f6f6f6] p-2 flex flex-col gap-2 overflow-y-scroll
+    @apply w-full h-full bg-[#f6f6f6] pt-2 px-2 flex flex-col gap-2 overflow-y-scroll
 }
 
 .drag-el {
