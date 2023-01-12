@@ -37,9 +37,9 @@
 
         <div class="component-container">
             <component :is="selectedComponent" 
-            :dayNames="dayNames" 
+            :date="date" 
             :week="week" :month="month"
-            :selectedMonth="selectedMonth" :currentDay="currentDay" :currentMonth="currentMonth" 
+            :dayNames="dayNames" 
             :list="items" />
         </div>
     </div>
@@ -58,7 +58,10 @@ import AddEvent from "./AddEvent/AddEvent.vue";
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import updateLocale from 'dayjs/plugin/updateLocale';
+
 import axios from "axios";
+
+//
 
 dayjs.extend(calendar);
 dayjs.extend(updateLocale);
@@ -87,10 +90,6 @@ let week = ref([]);
 let month = ref([]);
 
 const selectedMonth = ref(0);
-
-const currentDay = dayjs().date();
-
-const currentMonth = dayjs().month();
 
 const dayNames = [
     "lunes",
@@ -194,15 +193,12 @@ const getNext = () => {
 }
 
 watch(date, (newDate) => {
-    console.log(newDate.$d);
+    console.log(newDate);
     getWeekRange(newDate);
     getMonthRange(newDate);
     selectedMonth.value = newDate.month();
 })
 
-watch(selectedComponent, (nc) => {
-    console.log(nc);
-})
 // metodos de gestion de eventos 
 
 const loadEvent = async () => {

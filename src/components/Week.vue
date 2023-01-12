@@ -3,7 +3,7 @@
         <div class="day-container">
             <div class="day" v-for="day in week">
                 <div class="header">
-                    <div class="current" v-if="day.date() == currentDay && day.month() == currentMonth">
+                    <div class="current" v-if="day.date() == dayjs().date() && day.month() == dayjs().month()">
                         <div>
                             {{ dayNames[day.subtract(1, 'day').day()] }}
                         </div>
@@ -11,7 +11,7 @@
                             {{ day.date() }}
                         </div>
                     </div>
-                    <div v-else>
+                    <div v-else class="p-4">
                         <div>
                             {{ dayNames[day.subtract(1, 'day').day()] }}
                         </div>
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <!--drop zone-->
-                <DragEvent :list=list :day=generateID(day) /> <!-- pasar numero de day 20221220 y lista -->
+                <DragEvent :list=list :day=generateID(day) />
             </div>
         </div>
     </div>
@@ -32,11 +32,13 @@
 
 import DragEvent from './AddEvent/DragEvent.vue';
 
+import dayjs from 'dayjs';
+
+//
+
 const props = defineProps({
     week: Array,
     dayNames: Array,
-    currentMonth: Number,
-    currentDay: Number,
     list: Array,
 });
 
@@ -55,15 +57,15 @@ const generateID = day => String(day.year()) + '-' + String(day.month() + 1).pad
 }
 
 .day {
-    @apply w-full h-full bg-[#aeaeae] flex flex-col gap-[1px] shrink
+    @apply w-full h-full bg-[#aeaeae] flex flex-col gap-[1px]
 }
 
 .header {
-    @apply flex flex-col h-24 items-center justify-center p-2 text-center bg-[#f6f6f6] shrink
+    @apply w-full flex flex-col items-center justify-center text-center bg-[#f6f6f6]
 }
 
 .current {
-    @apply w-fit bg-[#f54f59] text-[#f6f6f6] font-black p-2 rounded-2xl
+    @apply w-full flex-col justify-center items-center bg-[#424242] text-[#f6f6f6] font-black p-4
 }
 
 </style>

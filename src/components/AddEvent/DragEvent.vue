@@ -2,7 +2,7 @@
     <div class="drop-zone" @drop="onDrop($event, day)" @dragenter.prevent @dragover.prevent>
         <div v-for="item in getList(day)" :key="item.id" class="drag-el" draggable="true"
             @dragstart="startDrag($event, item)">
-            {{ item.title }}
+            <p class="w-full">{{ item.title }}</p>
             <OptionEvent @SendDelete="deleteEvent(item)" @SendEdit="editEvent" />
             <FormEvent :dialog="dialog" @CloseModal="closeModal" @SendEvent="" />
         </div>
@@ -93,12 +93,13 @@ const editEvent = () => {
 </script>
 
 <style scoped>
+
 .drop-zone {
     @apply w-full h-full bg-[#f6f6f6] pt-2 px-2 flex flex-col gap-2 overflow-y-scroll
 }
 
 .drag-el {
-    @apply bg-[#aeaeae] text-[#f6f6f6] font-bold p-2 rounded-xl
+    @apply flex justify-between items-center border-solid border-[1px] border-[#888888] text-[#232323] text-xl font-bold p-2 rounded-xl
 }
 
 .drag-el:nth-last-of-type(1) {
