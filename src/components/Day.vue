@@ -1,35 +1,29 @@
 <template>
-    <div class="day-container"> 
-        <div class="period-container">
-            <div class="period" v-for="i in 24">
-                {{ (i - 1).toString().padStart(2, '0') }}
-            </div>
-        </div>
-        <div class="period-container">
-            <div class="period" v-for="i in 24"></div>
-        </div>
+    <div class="day-container">
+        <DragEvent :list=list :day=generateID(date) />
     </div>
-    <br>
 </template>
 
 <script setup>
 
+import DragEvent from './AddEvent/DragEvent.vue';
 
+//
+
+const props = defineProps({
+    date: Object,
+    dayNames: Array,
+    list: Array,
+});
+
+const generateID = day => String(day.year()) + '-' + String(day.month() + 1).padStart(2, '0') + '-' + String(day.date()).padStart(2, '0');
 
 </script>
 
 <style scoped>
 
 .day-container{
-    @apply flex
-}
-
-.period-container{
-    @apply basis-11/12 flex flex-col shrink-0
-}
-
-.period{
-    @apply h-16 border-solid border-b-[1px] border-[#aeaeae]
+    @apply flex flex-col p-12
 }
 
 </style>

@@ -31,32 +31,29 @@
                         enter-to-class="opacity-100 translate-y-0 sm:scale-100"
                         leave-active-class="ease-in duration-200" leave-class="opacity-100 translate-y-0 sm:scale-100"
                         leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                        <div
-                            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all  sm:my-8 sm:w-full sm:max-w-lg ">
+                        <div class="relative transform overflow-hidden border-solid border-2 border-[#d6d6d6] bg-[#f6f6f6] text-[#232323] font-normal text-left shadow-xl transition-all  sm:my-8 sm:w-full sm:max-w-lg ">
                             <div class=" mx-10 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                 <div class="sm:flex sm:items-start">
                                     <div class="w-full text-center">
                                         <div>
                                             <form class="flex flex-col" @submit.prevent="sendEvent">
-                                                <label for="name">Nombre:</label><br>
-                                                <input v-model="event.name" class="border border-blue-600  rounded"
+                                                <label for="name" class="text-left">Título</label><br>
+                                                <input v-model="event.name" class="border border-[#d6d6d6] p-2  rounded"
                                                     type="text" id="name" required><br>
-                                                <label for="reason">Motivo:</label><br>
-                                                <input v-model="event.reason" class="border border-blue-600 rounded"
+                                                <label for="reason" class="text-left">Motivo</label><br>
+                                                <input v-model="event.reason" class="border border-[#d6d6d6] p-2 rounded"
                                                     type="text" id="reason" required><br>
-                                                <label for="description">Descripción:</label><br>
-                                                <input v-model="event.description"
-                                                    class="border border-blue-600 rounded" type="text" id="description"
+                                                <label for="description" class="text-left">Descripción</label><br>
+                                                <input v-model="event.description" class="border border-[#d6d6d6] p-2 rounded" type="text" id="description"
                                                     required><br>
 
                                                 <div class="mt-5">
-                                                    <label class="mr-5" for="start">Fecha:</label>
 
                                                     <input v-model="event.start_date"
-                                                        class="w-32 h-7 border border-blue-600 rounded" type="date"
+                                                        class="p-2 border border-[#d6d6d6] rounded" type="date"
                                                         id="start" required>
                                                     <input v-model="event.start_time"
-                                                        class="w-20 h-7 border border-blue-600 ml-5 rounded" type="time"
+                                                        class="p-2 border border-[#d6d6d6] ml-5 rounded" type="time"
                                                         id="start" required>
                                                 </div>
 
@@ -66,19 +63,19 @@
 
 
                                                     <input v-model="event.end_date"
-                                                        class="w-32 h-7 border border-blue-600  rounded" type="date"
+                                                        class="w-32 h-7 border border-[#d6d6d6]  rounded" type="date"
                                                         id="end" required>
                                                     <input v-model="event.end_time"
-                                                        class="w-20 h-7 border border-blue-600 ml-5 rounded" type="time"
+                                                        class="w-20 h-7 border border-[#d6d6d6] ml-5 rounded" type="time"
                                                         id="end" required><br>
                                                 </div>
                                                 -->
 
-                                                <div class="flex flex-row ">
+                                                <div class="flex gap-4 flex-row ">
                                                     <button type="button" @click="closeModal"
-                                                        class="mt-10 w-full justify-center rounded-md border border-transparent  bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-300 focus:outline-none">Cancelar</button>
+                                                        class="mt-10 w-full justify-center rounded-md border border-transparent bg-[#aeaeae] px-4 py-2 text-base font-medium text-[#232323] shadow-sm hover:bg-[#d6d6d6] focus:outline-none">Cancelar</button>
                                                     <button type="submit"
-                                                        class="mt-10 w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-300 focus:outline-none">Aceptar</button>
+                                                        class="mt-10 w-full justify-center rounded-md border border-transparent bg-[#646464] px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-[#424242] focus:outline-none">Aceptar</button>
                                                 </div>
                                             </form>
                                         </div>
