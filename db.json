@@ -1,76 +1,28 @@
 {
   "events": [
     {
-      "name": "prueba 2",
-      "reason": "el que sea",
-      "description": "la que sea",
-      "start_date": "2022-12-8",
-      "start_time": "19:43",
-      "id": 2
+      "name": "amarillo1233",
+      "reason": "sadfasf",
+      "start_date": "2023-01-21",
+      "start_time": "21:43",
+      "color": "bg-green-500",
+      "id": 39
     },
     {
-      "name": "prueba 8",
-      "reason": "sdaf",
-      "description": "fasdfa",
-      "start_date": "2022-12-2022-12-14",
-      "start_time": "20:52",
-      "id": 6
+      "name": "verde12",
+      "reason": "123123",
+      "start_date": "2023-01-19",
+      "start_time": "21:45",
+      "color": "bg-red-500",
+      "id": 40
     },
     {
-      "name": "aaa",
-      "reason": "adasdada",
-      "description": "asdadads",
-      "start_date": "2023-01-2023-01-05",
-      "start_time": "12:03",
-      "id": 11
-    },
-    {
-      "name": "aaa",
-      "reason": "asdadad",
-      "description": "adsasdad",
-      "start_date": "2023-01-2023-01-15",
-      "start_time": "11:18",
-      "id": 12
-    },
-    {
-      "name": "no desaparezcas",
-      "reason": "asdada",
-      "description": "asdasdas",
-      "start_date": "2023-01-2023-01-13",
-      "start_time": "12:23",
-      "id": 13
-    },
-    {
-      "name": "aaa",
-      "reason": "asdadad",
-      "description": "adsasdad",
-      "start_date": "2023-01-02",
-      "start_time": "13:17",
-      "id": 17
-    },
-    {
-      "name": "test1",
-      "reason": "asdadad",
-      "description": "adsasdad",
-      "start_date": "2023-01-12",
-      "start_time": "14:25",
-      "id": 18
-    },
-    {
-      "name": "titulomuylargooooooo",
-      "reason": "asdadad",
-      "description": "adsasdad",
-      "start_date": "2023-01-17",
-      "start_time": "13:25",
-      "id": 19
-    },
-    {
-      "name": "test2",
-      "reason": "asdadad",
-      "description": "adsasdad",
-      "start_date": "2023-01-26",
-      "start_time": "13:26",
-      "id": 20
+      "name": "asdfas",
+      "reason": "1233113",
+      "start_date": "2023-01-18",
+      "start_time": "22:56",
+      "color": "bg-blue-500",
+      "id": 41
     }
   ]
 }
