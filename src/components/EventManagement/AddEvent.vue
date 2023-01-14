@@ -13,17 +13,17 @@ import axios from "axios";
 
 const dialog = ref();
 // no puedo poner const, no puedo igualar al evento con recibo con const
-let event = reactive({ name: "", reason: "", start_date: "", start_time: "" });
+let event = reactive({ name: "", reason: "", start_date: "", start_time: "", color: "" });
 
 const emits = defineEmits(["SendEvent"])
 
 
 const closeModal = (boolean) => {
     dialog.value = boolean;
+
 }
 
 const receiveEvent = (events) => {
-    
     event = events;
     addEvent();
 }
@@ -48,6 +48,7 @@ const addEvent = async () => {
             event.reason = "";
             event.start_date = "";
             event.start_time = "";
+            event.color = "";
 
             dialog.value = false;
         }
@@ -61,7 +62,7 @@ const addEvent = async () => {
 const getEvent = (event) => {
     return {
         name: event.name, reason: event.reason, start_date:
-            event.start_date, start_time: event.start_time
+            event.start_date, start_time: event.start_time, color: event.color
     }
 
 }

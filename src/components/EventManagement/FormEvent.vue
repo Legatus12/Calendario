@@ -45,6 +45,8 @@
                                                 <input v-model="event.reason"
                                                     class="border border-[#d6d6d6] p-2 rounded" type="text" id="reason"
                                                     required><br>
+                                                <label for="colour" class="text-left">Color</label>
+                                                <ColorPicker @SendColor="colourEvent" :currentColor="colour" />
                                                 <div class="mt-5">
                                                     <input v-model="event.start_date"
                                                         class="p-2 border border-[#d6d6d6] rounded" type="date"
@@ -53,6 +55,7 @@
                                                         class="p-2 border border-[#d6d6d6] ml-5 rounded" type="time"
                                                         id="start" required>
                                                 </div>
+
                                                 <!-- Fecha fin para una futura funcionalidad 
                                                 <div class="mt-5">
                                                     <label class="mr-9" for="end">Fin:</label>
@@ -92,7 +95,10 @@
 
 import { reactive, watch, ref } from 'vue';
 
-const event = reactive({ name: "", reason: "", start_date: "", start_time: "" });
+import ColorPicker from './ColorPicker.vue';
+
+const event = reactive({ name: "", reason: "", start_date: "", start_time: "", color: "Ningún Color" });
+const colour = ref();
 
 const activeAcept = ref(false);
 
@@ -110,23 +116,28 @@ watch(() => props.currentEvent, () => {
     event.reason = props.currentEvent.reason;
     event.start_date = props.currentEvent.list;
     event.start_time = props.currentEvent.start_time;
+    event.color = props.currentEvent.color;
     activeAcept.value = true;
-
-    
 })
 
 
 watch(() => event.name, (nw, ol) => {
-    if(nw!==props.currentEvent.title){
-    activeAcept.value = false;
+    if (nw !== props.currentEvent.title) {
+        activeAcept.value = false;
     }
 })
 
 watch(() => event.reason, (nw, ol) => {
-    if(nw!==props.currentEvent.reason){
-    activeAcept.value = false;
+    if (nw !== props.currentEvent.reason) {
+        activeAcept.value = false;
     }
 })
+
+const colourEvent = (col) => {
+    event.color = col;
+    colour.value = colorName(col);
+    
+}
 
 const delEvent = () => {
     emits("DeleteEvent")
@@ -136,13 +147,23 @@ const delEvent = () => {
 
 const closeModal = () => {
     emits("CloseModal", false)
+    if(!props.deleteEvent){
+    event.name = "";
+    event.reason = "";
+    event.start_date = "";
+    event.start_time = "";
+    event.color = "";
+    }
+    colour.value="Ningún color";
 }
 
 const sendEvent = () => {
     emits("SendEvent", event);
     emits("CloseModal", false);
-   
+
 }
+
+const colorName = (code) =>code.substring(code.indexOf("-") + 1, code.lastIndexOf("-"));
 
 </script>
 

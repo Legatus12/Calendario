@@ -1,86 +1,28 @@
 {
   "events": [
     {
-      "name": "prueba 2",
-      "reason": "el que sea",
-      "description": "la que sea",
-      "start_date": "2022-12-8",
-      "start_time": "19:43",
-      "id": 2
+      "name": "amarillo1233",
+      "reason": "sadfasf",
+      "start_date": "2023-01-21",
+      "start_time": "21:43",
+      "color": "bg-green-500",
+      "id": 39
     },
     {
-      "name": "prueba 8",
-      "reason": "sdaf",
-      "description": "fasdfa",
-      "start_date": "2022-12-2022-12-14",
-      "start_time": "20:52",
-      "id": 6
-    },
-    {
-      "name": "aaa",
-      "reason": "adasdada",
-      "description": "asdadads",
-      "start_date": "2023-01-2023-01-05",
-      "start_time": "12:03",
-      "id": 11
-    },
-    {
-      "name": "aaa",
-      "reason": "asdadad",
-      "description": "adsasdad",
-      "start_date": "2023-01-2023-01-15",
-      "start_time": "11:18",
-      "id": 12
-    },
-    {
-      "name": "no desaparezcas",
-      "reason": "asdada",
-      "description": "asdasdas",
-      "start_date": "2023-01-2023-01-13",
-      "start_time": "12:23",
-      "id": 13
-    },
-    {
-      "name": "gimnasio1223",
-      "reason": "prueba12",
-      "start_date": "2023-01-11",
-      "start_time": "18:33",
-      "id": 28
-    },
-    {
-      "name": "edu2346",
-      "reason": "1231335",
-      "start_date": "2023-01-14",
-      "start_time": "18:41",
-      "id": 29
-    },
-    {
-      "name": "edu",
-      "reason": "asdfas",
-      "start_date": "2023-01-18",
-      "start_time": "19:03",
-      "id": 31
-    },
-    {
-      "name": "asdfas2298",
-      "reason": "test5565",
-      "start_date": "2023-01-13",
-      "start_time": "19:12",
-      "id": 34
-    },
-    {
-      "name": "sdsafassa",
-      "reason": "sdfsaf",
-      "start_date": "2023-01-10",
-      "start_time": "19:37",
-      "id": 36
+      "name": "verde12",
+      "reason": "123123",
+      "start_date": "2023-01-19",
+      "start_time": "21:45",
+      "color": "bg-red-500",
+      "id": 40
     },
     {
       "name": "asdfas",
-      "reason": "test1",
-      "start_date": "2023-01-06",
-      "start_time": "23:37",
-      "id": 37
+      "reason": "1233113",
+      "start_date": "2023-01-18",
+      "start_time": "22:56",
+      "color": "bg-blue-500",
+      "id": 41
     }
   ]
 }

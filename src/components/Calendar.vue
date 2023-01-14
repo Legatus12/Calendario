@@ -212,7 +212,7 @@ const loadEvent = async () => {
 
         //recorro la información que hemos recibido y pusheo lo items en la listas según el dia
         res.data.forEach(element => {
-            items.push({ id: element.id, title: element.name, reason: element.reason, start_time: element.start_time, list: changeList(element) });
+            items.push({ id: element.id, title: element.name, reason: element.reason, start_time: element.start_time, list: changeList(element),color: element.color});
         });
 
     } catch (error) {
@@ -223,14 +223,14 @@ const loadEvent = async () => {
 
 const addEvent = (event) => {
     // se carga directamente en el array que corresponda y ya lo vemos por pantalla 
-    items.push({ id: event.id, title: event.name, reason: event.reason, start_time: event.start_time, list: event.start_date });
+    items.push({ id: event.id, title: event.name, reason: event.reason, start_time: event.start_time, list: event.start_date, color: event.color });
 
 }
 
 const modifyEvents = (event) => {
     items.forEach((element, index) => {
         if (element.id == event.id) {
-            items[index] = { id: event.id, title: event.name, reason: event.reason, start_time: event.start_time, list: event.start_date };
+            items[index] = { id: event.id, title: event.name, reason: event.reason, start_time: event.start_time, list: event.start_date,color:event.color};
         }
     });
 }

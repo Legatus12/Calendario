@@ -1,6 +1,6 @@
 <template>
     <div class="drop-zone" @drop="onDrop($event, day)" @dragenter.prevent @dragover.prevent>
-        <div v-for="item in getList(day)" :key="item.id" class="drag-el" draggable="true"
+        <div v-for="item in getList(day)" :key="item.id" :class="item.color" class="drag-el" draggable="true"
             @dragstart="startDrag($event, item)">
             <p v-if="selectDay" class="w-full">Titulo: {{ item.title }} Descripcion: {{ item.reason }} Hora de inicio:
                 {{ item.start_time }}</p>
@@ -113,7 +113,7 @@ const modifyEvents = async (event, item) => {
 const getEvent = (event) => {
     return {
         name: event.name, reason: event.reason, start_date:
-            event.start_date, start_time: event.start_time
+            event.start_date, start_time: event.start_time,color: event.color
     }
 
 }
