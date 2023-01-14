@@ -6,11 +6,7 @@
 
 <script setup>
 
-const emits = defineEmits(["SendDelete", "SendEdit"])
-
-const sendDelete = () => {
-    emits("SendDelete");
-}
+const emits = defineEmits(["SendEdit"])
 
 const sendEdit = () => {
     emits("SendEdit");

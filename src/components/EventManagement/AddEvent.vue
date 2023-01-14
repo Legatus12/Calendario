@@ -1,5 +1,5 @@
 <template>
-        
+
     <button @click="dialog = true" class="option-button" type="button"> + añadir evento</button>
     <FormEvent :dialog="dialog" @CloseModal="closeModal" @SendEvent="receiveEvent" />
 
@@ -8,13 +8,12 @@
 <script setup>
 
 import FormEvent from './FormEvent.vue';
-
 import { ref, reactive } from 'vue';
 import axios from "axios";
 
 const dialog = ref();
 // no puedo poner const, no puedo igualar al evento con recibo con const
-let event = reactive({ name: "", reason: "", description: "", start_date: "", start_time: "" });
+let event = reactive({ name: "", reason: "", start_date: "", start_time: "" });
 
 const emits = defineEmits(["SendEvent"])
 
@@ -24,7 +23,7 @@ const closeModal = (boolean) => {
 }
 
 const receiveEvent = (events) => {
-    console.log(events);
+    
     event = events;
     addEvent();
 }
@@ -38,7 +37,7 @@ const addEvent = async () => {
             console.log(prueba);*/
     try {
         //si esta todo ok se sube a la BBDD
-        if (event.name && event.reason && event.description && event.start_date && event.start_time) {
+        if (event.name && event.reason && event.start_date && event.start_time) {
             const res = await axios.post(`http://localhost:3000/events/`, getEvent(event));
             //con todo se envia el evento con emit
             emits("SendEvent", res.data);
@@ -47,7 +46,6 @@ const addEvent = async () => {
 
             event.name = "";
             event.reason = "";
-            event.description = "";
             event.start_date = "";
             event.start_time = "";
 
@@ -62,7 +60,7 @@ const addEvent = async () => {
 //información que contiene el evento
 const getEvent = (event) => {
     return {
-        name: event.name, reason: event.reason, description: event.description, start_date:
+        name: event.name, reason: event.reason, start_date:
             event.start_date, start_time: event.start_time
     }
 
@@ -71,9 +69,7 @@ const getEvent = (event) => {
 </script>
 
 <style scoped>
-
-.option-button{
+.option-button {
     @apply px-6 py-4 rounded-full hover:bg-[#d6d6d6]
 }
-
 </style> 

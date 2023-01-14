@@ -1,20 +1,23 @@
 <template>
     <div class="day-container">
-        <DragEvent :list=list :day=generateID(date) />
+        <DragEvent :list=list :day=generateID(date) :selectDay=selectDay @SendEvent="sendEvent"/>
     </div>
 </template>
 
 <script setup>
 
-import DragEvent from './AddEvent/DragEvent.vue';
+import DragEvent from './EventManagement/DragEvent.vue';
 
-//
+const emits = defineEmits(["SendEvent"])
 
 const props = defineProps({
     date: Object,
-    dayNames: Array,
+    // en proceso de borrar probar si funcionar sin dayNames: Array,
     list: Array,
+    selectDay: Boolean,
 });
+
+const sendEvent = event => emits("SendEvent",event);
 
 const generateID = day => String(day.year()) + '-' + String(day.month() + 1).padStart(2, '0') + '-' + String(day.date()).padStart(2, '0');
 

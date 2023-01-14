@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <!--drop zone-->
-                <DragEvent :list=list :day=generateID(day) />
+                <DragEvent :list=list :day=generateID(day) @SendEvent="sendEvent"/>
             </div>
         </div>
     </div>
@@ -30,11 +30,10 @@
 
 <script setup>
 
-import DragEvent from './AddEvent/DragEvent.vue';
-
+import DragEvent from './EventManagement/DragEvent.vue';
 import dayjs from 'dayjs';
 
-//
+const emits = defineEmits(["SendEvent"])
 
 const props = defineProps({
     week: Array,
@@ -43,6 +42,9 @@ const props = defineProps({
 });
 
 const generateID = day => String(day.year()) + '-' + String(day.month() + 1).padStart(2, '0') + '-' + String(day.date()).padStart(2, '0');
+
+const sendEvent = event => emits("SendEvent",event);
+
 
 </script>
 
