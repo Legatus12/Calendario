@@ -1,28 +1,60 @@
 {
   "events": [
     {
-      "name": "amarillo1233",
-      "reason": "sadfasf",
-      "start_date": "2023-01-21",
-      "start_time": "21:43",
-      "color": "bg-green-500",
-      "id": 39
-    },
-    {
-      "name": "verde12",
+      "name": "verde1",
       "reason": "123123",
-      "start_date": "2023-01-19",
-      "start_time": "21:45",
-      "color": "bg-red-500",
+      "start_date": "2023-01-20",
+      "start_time": "21:30",
+      "color": "bg-green-500",
       "id": 40
     },
     {
-      "name": "asdfas",
-      "reason": "1233113",
-      "start_date": "2023-01-18",
-      "start_time": "22:56",
-      "color": "bg-blue-500",
-      "id": 41
+      "name": "ola22",
+      "reason": "ola",
+      "start_date": "2023-01-04",
+      "start_time": "16:00",
+      "color": "bg-yellow-500",
+      "id": 42
+    },
+    {
+      "name": "edu",
+      "reason": "1234",
+      "start_date": "2023-01-16",
+      "start_time": "14:37",
+      "color": "bg-green-500",
+      "id": 43
+    },
+    {
+      "name": "223",
+      "reason": "31231",
+      "start_date": "2023-01-15",
+      "start_time": "17:09",
+      "color": "bg-green-500",
+      "id": 45
+    },
+    {
+      "name": "rtre",
+      "reason": "kskjd",
+      "start_date": "2023-01-24",
+      "start_time": "21:30",
+      "color": "bg-red-500",
+      "id": 46
+    },
+    {
+      "name": "edu",
+      "reason": "test",
+      "start_date": "2023-01-15",
+      "start_time": "17:55",
+      "color": "bg-green-500",
+      "id": 47
+    },
+    {
+      "name": "asdfas1",
+      "reason": "ñlk",
+      "start_date": "2023-01-15",
+      "start_time": "17:56",
+      "color": "bg-green-500",
+      "id": 48
     }
   ]
 }
