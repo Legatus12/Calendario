@@ -195,7 +195,6 @@ const getNext = () => {
 }
 
 watch(date, (newDate) => {
-    console.log(newDate);
     getWeekRange(newDate);
     getMonthRange(newDate);
     selectedMonth.value = newDate.month();

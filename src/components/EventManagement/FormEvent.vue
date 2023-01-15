@@ -97,7 +97,7 @@ import { reactive, watch, ref } from 'vue';
 
 import ColorPicker from './ColorPicker.vue';
 
-const event = reactive({ name: "", reason: "", start_date: "", start_time: "", color: "Ningún Color" });
+const event = reactive({ name: "", reason: "", start_date: "", start_time: "", color: "" });
 const colour = ref();
 
 const activeAcept = ref(false);
@@ -117,26 +117,32 @@ watch(() => props.currentEvent, () => {
     event.start_date = props.currentEvent.list;
     event.start_time = props.currentEvent.start_time;
     event.color = props.currentEvent.color;
+    colour.value = props.currentEvent.color;
     activeAcept.value = true;
 })
 
-
-watch(() => event.name, (nw, ol) => {
-    if (nw !== props.currentEvent.title) {
+watch(() => event.name, () => {
+    if (props.deleteEvent) {
         activeAcept.value = false;
     }
 })
 
-watch(() => event.reason, (nw, ol) => {
-    if (nw !== props.currentEvent.reason) {
+watch(() => event.reason, () => {
+    if (props.deleteEvent) {
+        activeAcept.value = false;
+    }
+})
+
+watch(() => event.color, () => {
+    if (props.deleteEvent) {
         activeAcept.value = false;
     }
 })
 
 const colourEvent = (col) => {
     event.color = col;
-    colour.value = colorName(col);
-    
+    colour.value = col;
+
 }
 
 const delEvent = () => {
@@ -147,23 +153,25 @@ const delEvent = () => {
 
 const closeModal = () => {
     emits("CloseModal", false)
-    if(!props.deleteEvent){
-    event.name = "";
-    event.reason = "";
-    event.start_date = "";
-    event.start_time = "";
-    event.color = "";
+    if (!props.deleteEvent) {
+        event.name = "";
+        event.reason = "";
+        event.start_date = "";
+        event.start_time = "";
+        event.color = "";
+        colour.value = "";
+    } else {
+        event.color = props.currentEvent.color;
+        colour.value = props.currentEvent.color;
     }
-    colour.value="Ningún color";
 }
 
 const sendEvent = () => {
     emits("SendEvent", event);
     emits("CloseModal", false);
+    colour.value = "";
 
 }
-
-const colorName = (code) =>code.substring(code.indexOf("-") + 1, code.lastIndexOf("-"));
 
 </script>
 
