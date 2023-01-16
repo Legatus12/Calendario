@@ -274,7 +274,7 @@ option {
 }
 
 .component-container {
-    @apply overflow-y-scroll h-full border-solid border-t-[1px] border-[#aeaeae]
+    @apply h-full border-solid border-t-[1px] border-[#aeaeae]
 }
 
 .component-container::-webkit-scrollbar {
