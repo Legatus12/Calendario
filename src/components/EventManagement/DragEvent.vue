@@ -1,17 +1,15 @@
 <template>
     <div class="drop-zone" @drop="onDrop($event, day)" @dragenter.prevent @dragover.prevent>
-        <div v-for="item in getList(day)" :key="item.id" class="drag-el" draggable="true"
+        <div v-for="item in getList(day)" :key="item.id" :class="item.color" class="drag-el" draggable="true"
             @dragstart="startDrag($event, item)">
-            <p class="w-full">{{ item.title }}</p>
-            <OptionEvent @SendDelete="deleteEvent(item)" @SendEdit="editEvent" />
-            <FormEvent :dialog="dialog" @CloseModal="closeModal" @SendEvent="" />
-        </div>
+            <p v-if="selectDay" class="w-full">Titulo: {{ item.title }} Descripcion: {{ item.reason }} Hora de inicio:
+                {{ item.start_time }}</p>
+            <p v-else class="w-full">{{ item.title }}</p>
+            <OptionEvent @SendEdit="editEvent(item)" />
+         </div>
     </div>
-    <!-- Papelera donde lanza objeto a borrar <div class="flex justify-center  bg-blue-500 w-20 h-12 rounded-full"
-        @drop="deleteEvent($event)" @dragenter.prevent @dragover.prevent>
-        <h1 class="mt-3">P</h1>
-        </div>
-        -->
+    <FormEvent :dialog="dialog" :currentEvent="actualEvent" :deleteEvent="deleteEvent" @CloseModal="closeModal"
+                @SendEvent="modifyEvents($event, actualEvent)" @DeleteEvent="delEvent(actualEvent)" />
 </template>
 
 <script setup>
@@ -23,9 +21,19 @@ import axios from "axios";
 import { ref } from "vue";
 
 const dialog = ref();
+const deleteEvent = ref();
+const actualEvent = ref();
 
-const props = defineProps({ day: Number, list: Array });
+const emits = defineEmits(["SendEvent"])
 
+const props = defineProps(
+    {
+        day: String,
+        list: Array,
+        selectDay: Boolean,
+    }
+
+);
 
 const closeModal = (boolean) => {
     dialog.value = boolean;
@@ -56,8 +64,8 @@ const onDrop = async (event, list) => {
     item.list = list;
 
     try {
-        //buscamos el item en la base de datos y lo actualizamos con la fecha segundo donde se ha tirado
-        const res = await axios.get(`http://localhost:3000/events/${item.id}`);
+        //buscamos el item en la base de datos y lo actualizamos con la fecha según donde se ha tirado
+        // en proceso de borrar comprobar si funciona bien const res = await axios.get(`http://localhost:3000/events/${item.id}`);
 
         await axios.patch(`http://localhost:3000/events/${item.id}`, {
             "start_date": list
@@ -68,10 +76,9 @@ const onDrop = async (event, list) => {
     }
 }
 
-// Para manejar lo eventos añadir, borrar  y modificar
+// Para borrar, modificar eventos 
 
-// Cuando cae un evento en la papelera
-const deleteEvent = async (event) => {
+const delEvent = async (event) => {
 
 
     try {
@@ -86,14 +93,40 @@ const deleteEvent = async (event) => {
     }
 }
 
-const editEvent = () => {
+const modifyEvents = async (event, item) => {
+
+    try {
+
+        const res = await axios.patch(`http://localhost:3000/events/${item.id}`, getEvent(event));
+
+        emits("SendEvent", res.data);
+
+        alert("Evento registrado con éxito")
+
+    } catch (error) {
+        console.log(error);
+        alert("Problema al cambiar evento");
+    }
+
+}
+
+const getEvent = (event) => {
+    return {
+        name: event.name, reason: event.reason, start_date:
+            event.start_date, start_time: event.start_time,color: event.color
+    }
+
+}
+
+const editEvent = (item) => {
     dialog.value = true;
+    deleteEvent.value = true;
+    actualEvent.value = item;    
 }
 
 </script>
 
 <style scoped>
-
 .drop-zone {
     @apply w-full h-full bg-[#f6f6f6] pt-2 px-2 flex flex-col gap-2 overflow-y-scroll
 }
@@ -115,6 +148,5 @@ const editEvent = () => {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-
 </style>
 

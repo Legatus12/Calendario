@@ -1,76 +1,60 @@
 {
   "events": [
     {
-      "name": "prueba 2",
-      "reason": "el que sea",
-      "description": "la que sea",
-      "start_date": "2022-12-8",
-      "start_time": "19:43",
-      "id": 2
+      "name": "verde1",
+      "reason": "123123",
+      "start_date": "2023-01-20",
+      "start_time": "21:30",
+      "color": "bg-green-500",
+      "id": 40
     },
     {
-      "name": "prueba 8",
-      "reason": "sdaf",
-      "description": "fasdfa",
-      "start_date": "2022-12-2022-12-14",
-      "start_time": "20:52",
-      "id": 6
+      "name": "ola22",
+      "reason": "ola",
+      "start_date": "2023-01-04",
+      "start_time": "16:00",
+      "color": "bg-yellow-500",
+      "id": 42
     },
     {
-      "name": "aaa",
-      "reason": "adasdada",
-      "description": "asdadads",
-      "start_date": "2023-01-2023-01-05",
-      "start_time": "12:03",
-      "id": 11
+      "name": "edu",
+      "reason": "1234",
+      "start_date": "2023-01-16",
+      "start_time": "14:37",
+      "color": "bg-green-500",
+      "id": 43
     },
     {
-      "name": "aaa",
-      "reason": "asdadad",
-      "description": "adsasdad",
-      "start_date": "2023-01-2023-01-15",
-      "start_time": "11:18",
-      "id": 12
+      "name": "223",
+      "reason": "31231",
+      "start_date": "2023-01-15",
+      "start_time": "17:09",
+      "color": "bg-green-500",
+      "id": 45
     },
     {
-      "name": "no desaparezcas",
-      "reason": "asdada",
-      "description": "asdasdas",
-      "start_date": "2023-01-2023-01-13",
-      "start_time": "12:23",
-      "id": 13
+      "name": "rtre",
+      "reason": "kskjd",
+      "start_date": "2023-01-24",
+      "start_time": "21:30",
+      "color": "bg-red-500",
+      "id": 46
     },
     {
-      "name": "aaa",
-      "reason": "asdadad",
-      "description": "adsasdad",
-      "start_date": "2023-01-02",
-      "start_time": "13:17",
-      "id": 17
+      "name": "edu",
+      "reason": "test",
+      "start_date": "2023-01-15",
+      "start_time": "17:55",
+      "color": "bg-green-500",
+      "id": 47
     },
     {
-      "name": "test1",
-      "reason": "asdadad",
-      "description": "adsasdad",
-      "start_date": "2023-01-12",
-      "start_time": "14:25",
-      "id": 18
-    },
-    {
-      "name": "titulomuylargooooooo",
-      "reason": "asdadad",
-      "description": "adsasdad",
-      "start_date": "2023-01-17",
-      "start_time": "13:25",
-      "id": 19
-    },
-    {
-      "name": "test2",
-      "reason": "asdadad",
-      "description": "adsasdad",
-      "start_date": "2023-01-26",
-      "start_time": "13:26",
-      "id": 20
+      "name": "asdfas1",
+      "reason": "ñlk",
+      "start_date": "2023-01-15",
+      "start_time": "17:56",
+      "color": "bg-green-500",
+      "id": 48
     }
   ]
 }

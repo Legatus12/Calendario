@@ -18,9 +18,13 @@
                 </div>
 
                 <div v-if="selectedComponent == Week">
-                    {{ date.startOf('week').date() }}&nbsp;/&nbsp;{{ date.startOf('week').month() + 1 }}&nbsp;/&nbsp;{{ date.startOf('week').year() }}
+                    {{ date.startOf('week').date() }}&nbsp;/&nbsp;{{ date.startOf('week').month() + 1 }}&nbsp;/&nbsp;{{
+                        date.startOf('week').year()
+                    }}
                     <br>
-                    {{ date.endOf('week').date() }}&nbsp;/&nbsp;{{ date.endOf('week').month() + 1 }}&nbsp;/&nbsp;{{ date.endOf('week').year() }}
+                    {{ date.endOf('week').date() }}&nbsp;/&nbsp;{{ date.endOf('week').month() + 1 }}&nbsp;/&nbsp;{{
+                        date.endOf('week').year()
+                    }}
                 </div>
 
                 <div v-if="selectedComponent == Month">
@@ -36,32 +40,27 @@
         </div>
 
         <div class="component-container">
-            <component :is="selectedComponent" 
-            :date="date" 
-            :week="week" :month="month"
-            :dayNames="dayNames" 
-            :list="items" />
+            <component :is="selectedComponent" :date="date" :week="week" :month="month" :dayNames="dayNames"
+                :selectDay="checkSelectedComponent" :list="items" @SendEvent="modifyEvents" />
         </div>
     </div>
 </template>
   
 <script setup>
 
-import { ref, shallowRef, watch, onMounted, onBeforeMount } from "vue";
+import { ref, shallowRef, watch, onMounted, onBeforeMount, computed, reactive } from "vue";
 
 import Day from './Day.vue';
 import Week from './Week.vue';
 import Month from './Month.vue';
 
-import AddEvent from "./AddEvent/AddEvent.vue";
+import AddEvent from "./EventManagement/AddEvent.vue";
 
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
 import axios from "axios";
-
-//
 
 dayjs.extend(calendar);
 dayjs.extend(updateLocale);
@@ -73,7 +72,10 @@ const localeObject = {
 
 dayjs.locale('es-my-settings', localeObject);
 
-console.log(dayjs().date())
+const checkSelectedComponent = computed(() =>
+    selectedComponent.value === Day
+);
+
 
 const selectedComponent = shallowRef(Day);
 
@@ -117,7 +119,7 @@ const monthNames = [
 ]
 
 //variable de los contenedores
-const items = ref([])
+const items = reactive([])
 
 onMounted(() => {
     getWeekRange(date.value);
@@ -193,7 +195,6 @@ const getNext = () => {
 }
 
 watch(date, (newDate) => {
-    console.log(newDate);
     getWeekRange(newDate);
     getMonthRange(newDate);
     selectedMonth.value = newDate.month();
@@ -210,7 +211,7 @@ const loadEvent = async () => {
 
         //recorro la información que hemos recibido y pusheo lo items en la listas según el dia
         res.data.forEach(element => {
-            items.value.push({ id: element.id, title: element.name, list: changeList(element) });
+            items.push({ id: element.id, title: element.name, reason: element.reason, start_time: element.start_time, list: changeList(element),color: element.color});
         });
 
     } catch (error) {
@@ -221,8 +222,16 @@ const loadEvent = async () => {
 
 const addEvent = (event) => {
     // se carga directamente en el array que corresponda y ya lo vemos por pantalla 
-    items.value.push({ id: event.id, title: event.name, list: event.start_date });
+    items.push({ id: event.id, title: event.name, reason: event.reason, start_time: event.start_time, list: event.start_date, color: event.color });
 
+}
+
+const modifyEvents = (event) => {
+    items.forEach((element, index) => {
+        if (element.id == event.id) {
+            items[index] = { id: event.id, title: event.name, reason: event.reason, start_time: event.start_time, list: event.start_date,color:event.color};
+        }
+    });
 }
 
 const changeList = (element) => {
@@ -276,5 +285,4 @@ option {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-
 </style>

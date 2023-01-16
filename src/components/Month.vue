@@ -18,7 +18,7 @@
                         <button class="hidden border-solid border-[1px] border-[#aeaeae] text-[#646464] px-2 rounded-full">+</button>
                     </div>
                     <!--drop zone-->
-                    <DragEvent :list=list :day=generateID(day) />
+                    <DragEvent :list=list :day=generateID(day) @SendEvent="sendEvent" />
                 </div>
                 <div v-else class="w-full h-full p-2 bg-[#d6d6d6]">
                     {{ day.date() }}
@@ -31,11 +31,11 @@
 
 <script setup>
 
-import DragEvent from './AddEvent/DragEvent.vue';
+import DragEvent from './EventManagement/DragEvent.vue';
 
 import dayjs from 'dayjs';
 
-//
+const emits = defineEmits(["SendEvent"])
 
 const props = defineProps({
     date: Object,
@@ -43,6 +43,8 @@ const props = defineProps({
     dayNames: Array,
     list: Array,
 });
+
+const sendEvent = event => emits("SendEvent",event);
 
 const generateID = day => String(day.year()) + '-' + String(day.month() + 1).padStart(2, '0') + '-' + String(day.date()).padStart(2, '0');
 
